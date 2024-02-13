@@ -3,21 +3,23 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 
-from Create_sample_target import create_sample_target
+import Parameters
+from Create_sample_target import create_sample_target_training
 from Dataset_loader import dataset_loader
 from Network_model_lstm_rnn import network_model_lstm_rnn
 from Trainer import Trainer
 
 
 def train_model():
-    samples, targets = create_sample_target("data/Train/Daily-train.csv", 60, 75)
+    samples, targets = create_sample_target_training("data/Train/Daily-train.csv")
 
     # Create tensors from data arrays
     tensor_samples = torch.from_numpy(samples).float()
     tensor_targets = torch.from_numpy(targets).float()
 
-    print(tensor_samples.shape)
-    print(tensor_targets.shape)
+    print("Tensor shapes:")
+    print("Samples: " + str(tensor_samples.shape))
+    print("Targets: " + str(tensor_targets.shape))
 
     # Put samples and targets into a dataset
     dataset = dataset_loader(tensor_samples, tensor_targets)
@@ -32,7 +34,11 @@ def train_model():
         model=model,
         dataset=train_dataloader,
         loss_fn=nn.MSELoss(),
-        optimizer=optim.SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay=0.0005)
+        optimizer=optim.SGD(
+            model.parameters(),
+            lr=Parameters.learning_rate,
+            momentum=Parameters.momentum,
+            weight_decay=Parameters.weight_decay)
     )
 
     # Train the model

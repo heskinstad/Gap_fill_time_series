@@ -1,10 +1,14 @@
 import torch
 from torch import nn, relu
 
+import Parameters
+
+
 class network_model_lstm_rnn(torch.nn.Module):
+
     def __init__(self):
         super().__init__()
-        self.lstm = nn.LSTM(input_size=1, hidden_size=50, num_layers=1, batch_first=True)
+        self.lstm = nn.LSTM(input_size=Parameters.lookback, hidden_size=50, num_layers=1, batch_first=True)
         self.linear = nn.Linear(50, 1)
 
     def forward(self, x):

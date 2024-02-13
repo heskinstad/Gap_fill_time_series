@@ -1,6 +1,8 @@
 from Train import train_model
 from Predict import predict
 
-#train_model()
+train_model()
 
-predict()
+#prediction = predict()
+
+#print(prediction)

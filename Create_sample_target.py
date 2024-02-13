@@ -1,25 +1,39 @@
+import random
 import numpy as np
 
+import Parameters
 from Process_csv import process_csv_row, process_csv_column
 
 
-def create_sample_target(path, gap_start, gap_end):
-    num_of_elements = 1
+def create_sample_target_training(path):
+    num_of_sample_targets_per_series = Parameters.num_of_sample_targets_per_series
+    total_num_of_series = Parameters.total_num_of_series
 
-    get_rows_length = len(process_csv_row(path, 1))
+    # Number of measurements to use for prediction
+    lookback = Parameters.lookback
 
-    samples = np.empty((num_of_elements, 97))
-    targets = np.empty((num_of_elements, gap_end-gap_start))
+    samples = np.empty((total_num_of_series * num_of_sample_targets_per_series, lookback))
+    targets = np.empty((total_num_of_series * num_of_sample_targets_per_series, 1))
 
-    for i in range(1, num_of_elements):
-        sample = np.array(process_csv_row(path, i)[:97], dtype=float)
-        target = sample.copy()[gap_start:gap_end]
+    for i in range(total_num_of_series):
+        current_series = np.array(process_csv_row(path, i+1), dtype=float)
+        series_length = current_series.size
 
-        for j in range(gap_start, gap_end):
-            sample[j] = 0.0
+        for j in range(num_of_sample_targets_per_series):
+            # Create n number of sample-targets from this one series
+            start = random.randint(0, series_length-lookback-2)
+            sample = current_series[start:start+lookback]
+            target = current_series[start+lookback+1]
 
-        samples[i-1] = sample
-        targets[i-1] = target
-
+            samples[i*j + j] = sample
+            targets[i*j + j] = target
 
     return samples, targets
+
+
+def create_sample_prediction(path):
+    current_series = np.array(process_csv_row(path, Parameters.prediction_series), dtype=float)
+
+    sample = current_series[Parameters.series_prediction_start-Parameters.lookback:Parameters.series_prediction_start]
+
+    return current_series, sample
