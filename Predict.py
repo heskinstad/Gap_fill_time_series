@@ -31,14 +31,14 @@ def predict_multiple():
     current_series, _ = create_sample_prediction(Parameters.path_test_data)
     predicted_series = current_series.copy()
 
-    for i in range(Parameters.number_of_predicts):
+    for i in range(Parameters.length_of_prediction):
         predicted_series[Parameters.series_prediction_start+i] = predict(
             predicted_series[Parameters.series_prediction_start+i-Parameters.lookback:
                            Parameters.series_prediction_start+i])
 
     for i in range(Parameters.series_prediction_start):
         predicted_series[i] = np.nan
-    for i in range(Parameters.series_prediction_start+Parameters.number_of_predicts, len(predicted_series)):
+    for i in range(Parameters.series_prediction_start+Parameters.length_of_prediction, len(predicted_series)):
         predicted_series[i] = np.nan
 
     return current_series, predicted_series
