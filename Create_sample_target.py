@@ -34,6 +34,8 @@ def create_sample_target_training(path):
 def create_sample_prediction(path):
     current_series = np.array(process_csv_row(path, Parameters.prediction_series), dtype=float)
 
-    sample = current_series[Parameters.series_prediction_start-Parameters.lookback:Parameters.series_prediction_start]
+    sample = np.empty((1, Parameters.lookback), dtype=float)
+
+    sample[0] = current_series[Parameters.series_prediction_start-Parameters.lookback:Parameters.series_prediction_start]
 
     return current_series, sample

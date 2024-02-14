@@ -11,7 +11,7 @@ from Trainer import Trainer
 
 
 def train_model():
-    samples, targets = create_sample_target_training("data/Train/Daily-train.csv")
+    samples, targets = create_sample_target_training(Parameters.path_train_data)
 
     # Create tensors from data arrays
     tensor_samples = torch.from_numpy(samples).float()
@@ -24,7 +24,7 @@ def train_model():
     # Put samples and targets into a dataset
     dataset = dataset_loader(tensor_samples, tensor_targets)
 
-    train_dataloader = DataLoader(dataset, batch_size=1, shuffle=True)
+    train_dataloader = DataLoader(dataset, batch_size=Parameters.batch_size, shuffle=True)
 
     # Initialize model
     model = network_model_lstm_rnn()
@@ -42,7 +42,7 @@ def train_model():
     )
 
     # Train the model
-    trainer.train(epochs=10)
+    trainer.train(epochs=Parameters.epochs)
 
     # Save the model
-    torch.save(model.state_dict(), "Trained_models/trained_model_lstm_rnn.pt")
+    torch.save(model.state_dict(), Parameters.path_trained_model)

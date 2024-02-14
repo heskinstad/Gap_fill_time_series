@@ -1,8 +1,9 @@
 from Train import train_model
-from Predict import predict
+from Predict import predict, predict_multiple
+from Plot_data import plot_data
 
-train_model()
+#train_model()
 
-#prediction = predict()
+original_data, prediction = predict_multiple()
 
-#print(prediction)
+plot_data(original_data, prediction)
