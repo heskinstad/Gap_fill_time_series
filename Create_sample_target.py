@@ -17,7 +17,11 @@ def create_sample_target_training(path):
     targets = np.empty((total_num_of_series * num_of_sample_targets_per_series, 1, 1))
 
     for i in range(total_num_of_series):
-        current_series = np.array(process_csv_row(path, i+1), dtype=float)
+        if Parameters.column_or_row == "row":
+            current_series = np.array(process_csv_row(path, i+Parameters.row_index), dtype=float)
+        else:
+            current_series = np.array(process_csv_column(path, i + Parameters.column_index), dtype=float)
+
         series_length = current_series.size
 
         for j in range(num_of_sample_targets_per_series):
@@ -41,10 +45,13 @@ def create_sample_target_training(path):
 
 
 def create_sample_prediction(path):
-    current_series = np.array(process_csv_row(path, Parameters.prediction_series), dtype=float)
+    if Parameters.column_or_row == "row":
+        current_series = np.array(process_csv_row(path, Parameters.prediction_series_row), dtype=float)
+    else:
+        current_series = np.array(process_csv_column(path, Parameters.prediction_series_column), dtype=float)
 
     sample = current_series[Parameters.series_prediction_start-Parameters.lookback:Parameters.series_prediction_start]
 
-    sample = sample.reshape(1, 20, 1)
+    sample = sample.reshape(1, Parameters.lookback, 1)
 
     return current_series, sample
