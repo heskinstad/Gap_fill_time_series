@@ -19,7 +19,7 @@ import Parameters
 
 
 class network_model_lstm_rnn(nn.Module):
-    def __init__(self, input_size=1, hidden_layer_size=100, output_size=1, num_layers=1):
+    def __init__(self, input_size=1, hidden_layer_size=100, output_size=Parameters.length_of_prediction, num_layers=1):
         super(network_model_lstm_rnn, self).__init__()
         self.hidden_layer_size = hidden_layer_size
 

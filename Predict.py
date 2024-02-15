@@ -30,7 +30,7 @@ def predict(sample=None):
     return prediction
 
 
-def predict_multiple():
+def predict_iterative():
     current_series, _ = create_sample_prediction(Parameters.path_test_data)
     predicted_series = current_series.copy()
 
@@ -48,3 +48,21 @@ def predict_multiple():
 
     return current_series, predicted_series
 
+def predict_batch():
+    current_series, _ = create_sample_prediction(Parameters.path_test_data)
+    predicted_series = current_series.copy()
+
+    predicted_series = predicted_series.reshape((predicted_series.size, 1))
+    print(predicted_series.shape)
+
+    predicted_series[Parameters.series_prediction_start:
+                     Parameters.series_prediction_start+Parameters.length_of_prediction] = predict(
+        predicted_series[Parameters.series_prediction_start-Parameters.lookback:
+                         Parameters.series_prediction_start])
+
+    for i in range(Parameters.series_prediction_start):
+        predicted_series[i] = np.nan
+    for i in range(Parameters.series_prediction_start+Parameters.length_of_prediction, len(predicted_series)):
+        predicted_series[i] = np.nan
+
+    return current_series, predicted_series

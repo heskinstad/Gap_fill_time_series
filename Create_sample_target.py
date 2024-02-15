@@ -14,7 +14,7 @@ def create_sample_target_training(path):
     lookback = Parameters.lookback
 
     samples = np.empty((total_num_of_series * num_of_sample_targets_per_series, lookback, 1))
-    targets = np.empty((total_num_of_series * num_of_sample_targets_per_series, 1, 1))
+    targets = np.empty((total_num_of_series * num_of_sample_targets_per_series, Parameters.length_of_prediction, 1))
 
     for i in range(total_num_of_series):
         if Parameters.column_or_row == "row":
@@ -26,9 +26,9 @@ def create_sample_target_training(path):
 
         for j in range(num_of_sample_targets_per_series):
             # Create n number of sample-targets from this one series
-            start = random.randint(0, series_length-lookback-2)
+            start = random.randint(0, series_length-lookback-Parameters.length_of_prediction-1)
             sample = current_series[start:start+lookback]
-            target = current_series[start+lookback:start+lookback+1]
+            target = current_series[start+lookback:start+lookback+Parameters.length_of_prediction]
 
             sample = np.expand_dims(sample, axis=1)
             target = np.expand_dims(target, axis=1)

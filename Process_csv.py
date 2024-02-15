@@ -19,7 +19,7 @@ def process_csv_column(path, column_index, has_header=True):
 
     return column_data
 
-# Reads a csv file and places all values of a specified column into its own array
+# Reads a csv file and places all values of a specified row into its own array
 def process_csv_row(path, row_index):
     row_data = None
 

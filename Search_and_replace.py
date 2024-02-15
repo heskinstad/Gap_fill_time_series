@@ -8,7 +8,7 @@ def search_and_replace(file_path, search_word, replace_word):
       file.write(updated_contents)
 
 # Example usage
-file_path = 'data/test/Daily-test.csv'
-search_word = '\"'
-replace_word = ''
+file_path = 'data/NDBC - Train/44040h2008.csv'
+search_word = ''
+replace_word = ','
 search_and_replace(file_path, search_word, replace_word)
