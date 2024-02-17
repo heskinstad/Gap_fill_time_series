@@ -9,6 +9,8 @@ from Dataset_loader import dataset_loader
 from Network_model_lstm_rnn import network_model_lstm_rnn
 from Trainer import Trainer
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 
 def train_model():
     samples, targets = create_sample_target_training(Parameters.path_train_data)
@@ -27,7 +29,7 @@ def train_model():
     train_dataloader = DataLoader(dataset, batch_size=Parameters.batch_size, shuffle=True)
 
     # Initialize model
-    model = network_model_lstm_rnn()
+    model = network_model_lstm_rnn().to(device)
 
     # Create a trainer
     trainer = Trainer(

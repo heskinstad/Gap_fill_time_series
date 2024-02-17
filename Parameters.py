@@ -14,16 +14,19 @@ num_of_sample_targets_per_series = 500
 total_num_of_series = 1
 
 # Training
-epochs = 1000
-learning_rate = 0.001
+epochs = 3000
+learning_rate = 0.05
 momentum = 0.9
 weight_decay = 0.0005
-batch_size = 5
+batch_size = 1000
+
+# Network
+num_layers = 1
 
 # Sample for prediction
 prediction_series_row = 1
 prediction_series_column = 15
-series_prediction_start = 1000
+series_prediction_start = 8500
 
 # Prediction parameters
 length_of_prediction = 100  # Size of gap, predict all at once (batch) - BATCH MODE IS AUTOMATICALLY CHOSEN IF THIS VARIABLE IS GREATER THAN 1

@@ -33,10 +33,10 @@ def create_sample_target_training(path):
             sample = np.expand_dims(sample, axis=1)
             target = np.expand_dims(target, axis=1)
 
-            print(sample.shape)
-            print(sample)
-            print(target.shape)
-            print(target)
+            #print(sample.shape)
+            #print(sample)
+            #print(target.shape)
+            #print(target)
 
             samples[i*j + j] = sample
             targets[i*j + j] = target

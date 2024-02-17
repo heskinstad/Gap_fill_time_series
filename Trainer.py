@@ -25,6 +25,7 @@ class Trainer:
                 loss.backward()
                 self.optimizer.step()
 
+                # Learning rate that decays linearly (comment out this block if you want a constant learning rate)
                 for param_group in self.optimizer.param_groups:
                     param_group['lr'] = learning_rate - (learning_rate / epochs) * epoch
 

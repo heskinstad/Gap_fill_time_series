@@ -5,9 +5,11 @@ import Parameters
 from Network_model_lstm_rnn import network_model_lstm_rnn
 from Create_sample_target import create_sample_prediction
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 def predict(sample=None):
     # Load trained model
-    model = network_model_lstm_rnn()
+    model = network_model_lstm_rnn().to(device)
     model.load_state_dict(torch.load(Parameters.path_trained_model))
 
     # Load data
@@ -17,11 +19,10 @@ def predict(sample=None):
         sample = sample.reshape((1, Parameters.lookback, 1))
 
     # Create tensors from data arrays
-    tensor_sample = torch.from_numpy(sample).float()
+    tensor_sample = torch.from_numpy(sample).float().to(device)
 
     print("Tensor shape:")
     print("Sample: " + str(sample.shape))
-    print(sample)
 
     # Predict based on input and send to numpy
     prediction = model(tensor_sample).cpu()
