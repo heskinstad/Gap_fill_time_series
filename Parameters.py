@@ -26,7 +26,7 @@ num_layers = 1
 # Sample for prediction
 prediction_series_row = 1
 prediction_series_column = 15
-series_prediction_start = 8500
+series_prediction_start = 1000
 
 # Prediction parameters
 length_of_prediction = 100  # Size of gap, predict all at once (batch) - BATCH MODE IS AUTOMATICALLY CHOSEN IF THIS VARIABLE IS GREATER THAN 1

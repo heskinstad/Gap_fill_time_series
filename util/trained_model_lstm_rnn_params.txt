@@ -1,0 +1,24 @@
+Training parameters
+
+Training file info
+Dataset: data/NDBC - Train/44040h2008.csv
+Column or row: column
+Column index: 15
+
+Samples & targets creation
+Lookback: 100
+Number of sample-targets per series: 500
+Total number of series: 1
+
+Training
+Epochs: 3000
+Learning rate: 0.05
+Momentum: 0.9
+Weight decay: 0.0005
+Batch size: 1000
+
+Network info
+Number of layers: 1
+
+Prediction parameters
+Length of prediction (gap length): 100

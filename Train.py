@@ -8,6 +8,7 @@ from Create_sample_target import create_sample_target_training
 from Dataset_loader import dataset_loader
 from Network_model_lstm_rnn import network_model_lstm_rnn
 from Trainer import Trainer
+from Produce_parameters_log import Produce_log
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -48,3 +49,6 @@ def train_model():
 
     # Save the model
     torch.save(model.state_dict(), Parameters.path_trained_model)
+
+    # Produce training log file
+    Produce_log()
