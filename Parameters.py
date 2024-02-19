@@ -1,4 +1,5 @@
 mode = "predict"  # "train" or "predict"
+prediction_mode = "fill_gap"  # "forecast_forward to predict future states only, "fill_gap" to use data before and after gap to predict fill
 
 # Paths
 path_train_data = "data/NDBC - Train/44040h2008.csv"
@@ -6,28 +7,33 @@ path_test_data = "data/NDBC - Train/44040h2008.csv"
 path_trained_model = "Trained_models/trained_model_lstm_rnn.pt"
 column_or_row = "column"
 row_index = 1
-column_index = 15
+column_index = 13
 
 # Create sample-targets
 lookback = 100  # Input dimension
+lookforward = 100  # Input dimension if prediction_mode is "fill_gap"
 num_of_sample_targets_per_series = 500
 total_num_of_series = 1
 
 # Training
-epochs = 3000
+epochs = 30
 learning_rate = 0.05
 momentum = 0.9
 weight_decay = 0.0005
 batch_size = 1000
 
-# Network
-num_layers = 1
-
 # Sample for prediction
 prediction_series_row = 1
-prediction_series_column = 15
+prediction_series_column = 13
 series_prediction_start = 1000
 
 # Prediction parameters
 length_of_prediction = 100  # Size of gap, predict all at once (batch) - BATCH MODE IS AUTOMATICALLY CHOSEN IF THIS VARIABLE IS GREATER THAN 1
 number_of_predicts = 1000  # Size of gap, predict one by one (iterative)
+
+# Network
+num_layers = 1
+if prediction_mode == "forecast_forward":
+    network_output_size = length_of_prediction
+else:
+    network_output_size = length_of_prediction+lookback+lookforward

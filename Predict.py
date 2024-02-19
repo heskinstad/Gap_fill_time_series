@@ -3,7 +3,7 @@ import torch
 
 import Parameters
 from Network_model_lstm_rnn import network_model_lstm_rnn
-from Create_sample_target import create_sample_prediction
+from Create_sample_target import create_sample_prediction, create_sample_gap_prediction
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -14,9 +14,15 @@ def predict(sample=None):
 
     # Load data
     if sample is None:
-        _, sample = create_sample_prediction(Parameters.path_test_data)
+        if Parameters.prediction_mode == "forecast_forward":
+            _, sample = create_sample_prediction(Parameters.path_test_data)
+        else:
+            _, sample = create_sample_gap_prediction(Parameters.path_test_data)
     else:
-        sample = sample.reshape((1, Parameters.lookback, 1))
+        if Parameters.prediction_mode == "forecast_forward":
+            sample = sample.reshape((1, Parameters.lookback, 1))
+        else:
+            sample = sample.reshape((1, Parameters.lookback+Parameters.length_of_prediction+Parameters.lookforward, 1))
 
     # Create tensors from data arrays
     tensor_sample = torch.from_numpy(sample).float().to(device)
@@ -50,16 +56,26 @@ def predict_iterative():
     return current_series, predicted_series
 
 def predict_batch():
-    current_series, _ = create_sample_prediction(Parameters.path_test_data)
+    if Parameters.prediction_mode == "forecast_forward":
+        current_series, _ = create_sample_prediction(Parameters.path_test_data)
+    else:
+        current_series, _ = create_sample_gap_prediction(Parameters.path_test_data)
+
     predicted_series = current_series.copy()
 
     predicted_series = predicted_series.reshape((predicted_series.size, 1))
     print(predicted_series.shape)
 
-    predicted_series[Parameters.series_prediction_start:
-                     Parameters.series_prediction_start+Parameters.length_of_prediction] = predict(
+    if Parameters.prediction_mode == "forecast_forward":
+        predicted_series[Parameters.series_prediction_start:
+                         Parameters.series_prediction_start+Parameters.length_of_prediction] = predict(
+            predicted_series[Parameters.series_prediction_start-Parameters.lookback:
+                             Parameters.series_prediction_start])
+    else:
         predicted_series[Parameters.series_prediction_start-Parameters.lookback:
-                         Parameters.series_prediction_start])
+                         Parameters.series_prediction_start+Parameters.length_of_prediction+Parameters.lookforward] = predict(
+            predicted_series[Parameters.series_prediction_start-Parameters.lookback:
+                             Parameters.series_prediction_start+Parameters.length_of_prediction+Parameters.lookforward])
 
     for i in range(Parameters.series_prediction_start):
         predicted_series[i] = np.nan

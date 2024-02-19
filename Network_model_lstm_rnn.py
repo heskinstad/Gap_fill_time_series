@@ -21,7 +21,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 class network_model_lstm_rnn(nn.Module):
-    def __init__(self, input_size=1, hidden_layer_size=100, output_size=Parameters.length_of_prediction, num_layers=Parameters.num_layers):
+    def __init__(self, input_size=1, hidden_layer_size=100, output_size=Parameters.network_output_size, num_layers=Parameters.num_layers):
         super(network_model_lstm_rnn, self).__init__()
         self.hidden_layer_size = hidden_layer_size
 

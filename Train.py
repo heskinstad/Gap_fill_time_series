@@ -4,7 +4,7 @@ import torch.optim as optim
 from torch.utils.data import DataLoader
 
 import Parameters
-from Create_sample_target import create_sample_target_training
+from Create_sample_target import create_sample_target_training, create_sample_target_gap_training
 from Dataset_loader import dataset_loader
 from Network_model_lstm_rnn import network_model_lstm_rnn
 from Trainer import Trainer
@@ -14,7 +14,10 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def train_model():
-    samples, targets = create_sample_target_training(Parameters.path_train_data)
+    if Parameters.prediction_mode == "forecast_forward":
+        samples, targets = create_sample_target_training(Parameters.path_train_data)
+    else:
+        samples, targets = create_sample_target_gap_training(Parameters.path_train_data)
 
     # Create tensors from data arrays
     tensor_samples = torch.from_numpy(samples).float()
