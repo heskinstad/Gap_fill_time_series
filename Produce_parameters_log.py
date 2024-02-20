@@ -23,6 +23,7 @@ def Produce_log():
     batch_size = "Batch size: " + str(Parameters.batch_size)
 
     num_layers = "Number of layers: " + str(Parameters.num_layers)
+    hidden_layer_size = "Hidden layer size: " + str(Parameters.hidden_layer_size)
 
     length_of_prediction = "Length of prediction (gap length): " + str(Parameters.length_of_prediction)
 
@@ -54,6 +55,7 @@ def Produce_log():
         batch_size + "\n" +
         "\nNetwork info:\n" +
         num_layers + "\n" +
+        hidden_layer_size + "\n" +
         "\nPrediction parameters:\n" +
         length_of_prediction + "\n" +
         "\nResults after training:\n" +
