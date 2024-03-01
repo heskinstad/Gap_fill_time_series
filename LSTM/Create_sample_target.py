@@ -65,7 +65,7 @@ def create_sample_target_gap_training(path):
     lookforward = Parameters.lookforward
 
     samples = np.empty((total_num_of_series * num_of_sample_targets_per_series, lookback + Parameters.length_of_prediction + lookforward, 1))
-    targets = np.empty((total_num_of_series * num_of_sample_targets_per_series, lookback + Parameters.length_of_prediction + lookforward, 1))
+    targets = np.empty((total_num_of_series * num_of_sample_targets_per_series, Parameters.length_of_prediction, 1))
 
     for i in range(total_num_of_series):
         if Parameters.column_or_row == "row":
@@ -80,7 +80,7 @@ def create_sample_target_gap_training(path):
             start = random.randint(0, series_length - lookback - Parameters.length_of_prediction - 1 - lookforward)
             sample = current_series.copy()[start:start + lookback + Parameters.length_of_prediction + lookforward]
             sample[lookback:lookback + Parameters.length_of_prediction] = -10.0  # TODO: instead of this, add another parallel binary feature to indicate if a value is in a gap or not
-            target = current_series[start:start + lookback + Parameters.length_of_prediction + lookforward]
+            target = current_series[start:start + Parameters.length_of_prediction]
 
             sample = np.expand_dims(sample, axis=1)
             target = np.expand_dims(target, axis=1)

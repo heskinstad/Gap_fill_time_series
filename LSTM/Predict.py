@@ -73,8 +73,8 @@ def predict_batch():
             predicted_series[Parameters.series_prediction_start - Parameters.lookback:
                              Parameters.series_prediction_start])
     else:
-        predicted_series[Parameters.series_prediction_start - Parameters.lookback:
-                         Parameters.series_prediction_start + Parameters.length_of_prediction + Parameters.lookforward] = predict(
+        predicted_series[Parameters.series_prediction_start:
+                         Parameters.series_prediction_start + Parameters.length_of_prediction] = predict(
             predicted_series[Parameters.series_prediction_start - Parameters.lookback:
                              Parameters.series_prediction_start + Parameters.length_of_prediction + Parameters.lookforward])
 

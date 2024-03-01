@@ -1,4 +1,9 @@
+import os
+
+import numpy as np
 import torch
+from matplotlib import pyplot as plt
+
 
 class Trainer:
     def __init__(self, model, dataset, optimizer, loss_fn):
@@ -10,6 +15,8 @@ class Trainer:
 
     def train(self, epochs):
         learning_rate = self.optimizer.param_groups[0]['lr']
+
+        loss_values = np.empty(epochs, dtype=float)
 
         for epoch in range(epochs):
             # Train on the training data
@@ -41,6 +48,8 @@ class Trainer:
                 final_loss.backward()
                 self.optimizer.step()
 
+                loss_values[epoch] = final_loss
+
                 # Learning rate that decays linearly (comment out this block if you want a constant learning rate)
                 for param_group in self.optimizer.param_groups:
                     param_group['lr'] = learning_rate - (learning_rate / epochs) * epoch
@@ -48,3 +57,9 @@ class Trainer:
                 # Print the loss
                 if batch_idx % 100 == 0:
                     print('Epoch: {} | Batch: {} | Loss: {}'.format(epoch, batch_idx, loss.item()))
+
+        # Plot the loss
+        plt.plot(loss_values)
+        plt.xlabel("Loss")
+        plt.savefig(os.getcwd() + r"\Trained_models\trained_model_lstm_rnn_figure.png")
+        plt.show()

@@ -18,8 +18,8 @@ num_of_sample_targets_per_series = 250  # Number of samples (and corresponding t
 total_num_of_series = 1  # Number of data series, if the data is split between multiple rows/columns
 
 # Training
-epochs = 1500
-learning_rate = 0.05
+epochs = 50
+learning_rate = 0.004
 momentum = 0.9
 weight_decay = 0.0005
 batch_size = 16
@@ -39,4 +39,4 @@ hidden_layer_size = 300
 if prediction_mode == "forecast_forward":
     network_output_size = length_of_prediction
 else:
-    network_output_size = length_of_prediction+lookback+lookforward
+    network_output_size = length_of_prediction
