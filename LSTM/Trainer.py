@@ -18,11 +18,27 @@ class Trainer:
                 predictions = self.model(samples.to(self.device))
 
                 # Calculate the loss
-                loss = self.loss_fn(predictions.to(self.device), targets.to(self.device))
+                #loss = self.loss_fn(predictions.to(self.device), targets.to(self.device))
+
+                boundary_weight = 50.0
+
+                # New loss calculation to improve boundary predictions
+                loss = self.loss_fn(predictions, targets)  # Calculate the base loss for all points
+
+                # Identify boundary points and apply increased weight
+                # Assuming the first and last points in each sequence are boundaries, and -10 indicates a gap
+                boundary_mask = torch.zeros_like(targets)
+                boundary_mask[:, 0] = boundary_weight  # First point in each sequence
+                boundary_mask[:, -1] = boundary_weight  # Last point in each sequence
+                boundary_mask[targets == -10.0] = boundary_weight  # Gap points
+
+                # Apply the boundary mask
+                weighted_loss = loss * boundary_mask
+                final_loss = weighted_loss.mean()  # Average the loss
 
                 # Backward pass
                 self.optimizer.zero_grad()
-                loss.backward()
+                final_loss.backward()
                 self.optimizer.step()
 
                 # Learning rate that decays linearly (comment out this block if you want a constant learning rate)

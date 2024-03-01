@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Read the CSV file
-df = pd.read_csv('data/Train/Daily-train.csv')
+df = pd.read_csv('../data/Train/Daily-train.csv')
 
 # Extract descriptive rows and columns
 descriptive_rows = df.iloc[:, :1]  # First column as descriptive

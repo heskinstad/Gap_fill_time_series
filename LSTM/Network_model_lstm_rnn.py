@@ -1,5 +1,5 @@
 import torch
-from torch import nn, relu
+from torch import nn
 
 import Parameters
 

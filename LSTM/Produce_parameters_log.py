@@ -1,19 +1,21 @@
-import Parameters
+import Parameters, os
 
 
 # Writes a log of parameters used in latest trained model
 # Because it's neat to have when trying to replicate previous results ;)
 def Produce_log():
-    path = "Trained_models/trained_model_lstm_rnn_params.txt"
+    path = os.getcwd() + r"\Trained_models\trained_model_lstm_rnn_params.txt"
 
     dataset = "Dataset: " + Parameters.path_train_data
     column_or_row = "Column or row: " + Parameters.column_or_row
-    index = "Column index: " + str(Parameters.column_index) if Parameters.column_or_row == "column" else "Row index: " + str(Parameters.row_index)
+    index = "Column index: " + str(
+        Parameters.column_index) if Parameters.column_or_row == "column" else "Row index: " + str(Parameters.row_index)
 
     prediction_mode = "Prediction mode: " + str(Parameters.prediction_mode)
     lookback = "Lookback: " + str(Parameters.lookback)
     lookforward = "Lookforward: " + str(Parameters.lookforward)
-    num_of_sample_targets_per_series = "Number of sample-targets per series: " + str(Parameters.num_of_sample_targets_per_series)
+    num_of_sample_targets_per_series = "Number of sample-targets per series: " + str(
+        Parameters.num_of_sample_targets_per_series)
     total_num_of_series = "Total number of series: " + str(Parameters.total_num_of_series)
 
     epochs = "Epochs: " + str(Parameters.epochs)
