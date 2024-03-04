@@ -27,14 +27,14 @@ class Trainer:
                 # Calculate the loss
                 #loss = self.loss_fn(predictions.to(self.device), targets.to(self.device))
 
-                boundary_weight = 50.0
+                boundary_weight = 1000.0
 
                 # New loss calculation to improve boundary predictions
-                loss = self.loss_fn(predictions, targets)  # Calculate the base loss for all points
+                loss = self.loss_fn(predictions.to(self.device), targets.to(self.device))  # Calculate the base loss for all points
 
                 # Identify boundary points and apply increased weight
                 # Assuming the first and last points in each sequence are boundaries, and -10 indicates a gap
-                boundary_mask = torch.zeros_like(targets)
+                boundary_mask = torch.zeros_like(targets.to(self.device))
                 boundary_mask[:, 0] = boundary_weight  # First point in each sequence
                 boundary_mask[:, -1] = boundary_weight  # Last point in each sequence
                 boundary_mask[targets == -10.0] = boundary_weight  # Gap points
