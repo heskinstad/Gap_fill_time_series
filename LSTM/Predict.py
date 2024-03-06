@@ -24,7 +24,8 @@ def predict(sample=None):
         if Parameters.prediction_mode == "forecast_forward":
             sample = sample.reshape((1, Parameters.lookback, 1))
         else:
-            sample = sample.reshape((1, Parameters.lookback + Parameters.length_of_prediction + Parameters.lookforward, 1))
+            #sample = sample.reshape((1, Parameters.lookback + Parameters.length_of_prediction + Parameters.lookforward, 1))
+            sample = sample.reshape((1, Parameters.lookback+100, 1))
 
     # Create tensors from data arrays
     tensor_sample = torch.from_numpy(sample).float().to(device)

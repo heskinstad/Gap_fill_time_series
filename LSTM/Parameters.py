@@ -14,7 +14,7 @@ column_index = 13  # The column index to use, if entries ordered by columns
 # Create sample-targets
 lookback = 50  # Input dimension
 lookforward = 50  # Input dimension if prediction_mode is "fill_gap"
-num_of_sample_targets_per_series = 500  # Number of samples (and corresponding targets) per complete data series
+num_of_sample_targets_per_series = 10000  # Number of samples (and corresponding targets) per complete data series
 total_num_of_series = 1  # Number of data series, if the data is split between multiple rows/columns
 
 # Normalize data
@@ -23,7 +23,7 @@ data_max_value = 30
 data_min_value = -10
 
 # Training
-epochs = 1000
+epochs = 2500
 learning_rate = 0.001
 momentum = 0.9
 weight_decay = 0.0005
@@ -32,7 +32,7 @@ batch_size = 64
 # Sample for prediction
 prediction_series_row = 1  # Which row from the dataset file to create samples from (if ordered by rows)
 prediction_series_column = 13  # Which column from the dataset file to create samples from (if ordered by columns)
-series_prediction_start = 3300  # The starting point of the test dataset to predict from
+series_prediction_start = 1263  # The starting point of the test dataset to predict from
 
 # Prediction parameters
 length_of_prediction = 50  # Size of gap, predict all at once (batch) - BATCH MODE IS AUTOMATICALLY CHOSEN IF THIS VARIABLE IS GREATER THAN 1
