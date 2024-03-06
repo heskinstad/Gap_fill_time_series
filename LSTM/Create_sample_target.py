@@ -3,6 +3,7 @@ import numpy as np
 
 import Parameters
 from Process_csv import process_csv_row, process_csv_column
+from Normalize import Normalize
 
 
 def create_sample_target_training(path):
@@ -80,7 +81,7 @@ def create_sample_target_gap_training(path):
             start = random.randint(0, series_length - lookback - Parameters.length_of_prediction - 1 - lookforward)
             sample = current_series.copy()[start:start + lookback + Parameters.length_of_prediction + lookforward]
             sample[lookback:lookback + Parameters.length_of_prediction] = -10.0  # TODO: instead of this, add another parallel binary feature to indicate if a value is in a gap or not
-            target = current_series[start:start + Parameters.length_of_prediction]
+            target = current_series.copy()[start + lookback:start + lookback + Parameters.length_of_prediction]
 
             sample = np.expand_dims(sample, axis=1)
             target = np.expand_dims(target, axis=1)
@@ -93,6 +94,10 @@ def create_sample_target_gap_training(path):
             samples[i*j + j] = sample
             targets[i*j + j] = target
 
+            if Parameters.normalize_values:
+                samples = Normalize(samples, Parameters.data_max_value, Parameters.data_min_value)
+                targets = Normalize(targets, Parameters.data_max_value, Parameters.data_min_value)
+
     return samples, targets
 
 
@@ -103,9 +108,13 @@ def create_sample_gap_prediction(path):
         current_series = np.array(process_csv_column(path, Parameters.prediction_series_column), dtype=float)
 
     sample = current_series.copy()[
-             Parameters.series_prediction_start - Parameters.lookback:Parameters.series_prediction_start + Parameters.length_of_prediction + Parameters.lookforward]
-    sample[Parameters.lookback:Parameters.length_of_prediction + Parameters.series_prediction_start] = -10.0
+             Parameters.series_prediction_start - Parameters.lookback:Parameters.series_prediction_start +
+             Parameters.length_of_prediction + Parameters.lookforward]
 
-    sample = sample.reshape(1, Parameters.lookback + Parameters.length_of_prediction + Parameters.lookforward, 1)
+    sample[Parameters.lookback:Parameters.lookback + Parameters.length_of_prediction] = -10.0
 
+    if Parameters.normalize_values:
+        sample = Normalize(sample, Parameters.data_max_value, Parameters.data_min_value)
+
+    #sample = sample.reshape(1, Parameters.lookback + Parameters.length_of_prediction + Parameters.lookforward, 1)
     return current_series, sample

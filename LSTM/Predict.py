@@ -1,9 +1,11 @@
 import numpy as np
 import torch
+from matplotlib import pyplot as plt
 
 import Parameters
 from Network_model_lstm_rnn import network_model_lstm_rnn
 from Create_sample_target import create_sample_prediction, create_sample_gap_prediction
+from Normalize import Denormalize
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -34,6 +36,9 @@ def predict(sample=None):
     prediction = model(tensor_sample).cpu()
     prediction = prediction.detach().numpy()
 
+    if Parameters.normalize_values:
+        prediction = Denormalize(prediction, Parameters.data_max_value, Parameters.data_min_value)
+
     return prediction
 
 
@@ -58,14 +63,13 @@ def predict_iterative():
 
 def predict_batch():
     if Parameters.prediction_mode == "forecast_forward":
-        current_series, _ = create_sample_prediction(Parameters.path_test_data)
+        current_series, sample = create_sample_prediction(Parameters.path_test_data)
     else:
-        current_series, _ = create_sample_gap_prediction(Parameters.path_test_data)
+        current_series, sample = create_sample_gap_prediction(Parameters.path_test_data)
 
     predicted_series = current_series.copy()
 
     predicted_series = predicted_series.reshape((predicted_series.size, 1))
-    print(predicted_series.shape)
 
     if Parameters.prediction_mode == "forecast_forward":
         predicted_series[Parameters.series_prediction_start:
@@ -74,9 +78,7 @@ def predict_batch():
                              Parameters.series_prediction_start])
     else:
         predicted_series[Parameters.series_prediction_start:
-                         Parameters.series_prediction_start + Parameters.length_of_prediction] = predict(
-            predicted_series[Parameters.series_prediction_start - Parameters.lookback:
-                             Parameters.series_prediction_start + Parameters.length_of_prediction + Parameters.lookforward])
+                         Parameters.series_prediction_start + Parameters.length_of_prediction] = predict(sample)
 
     #for i in range(Parameters.series_prediction_start):
     #    predicted_series[i] = np.nan

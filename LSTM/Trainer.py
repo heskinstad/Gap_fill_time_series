@@ -4,6 +4,8 @@ import numpy as np
 import torch
 from matplotlib import pyplot as plt
 
+from LSTM import Parameters
+
 
 class Trainer:
     def __init__(self, model, dataset, optimizer, loss_fn):
@@ -25,9 +27,9 @@ class Trainer:
                 predictions = self.model(samples.to(self.device))
 
                 # Calculate the loss
-                #loss = self.loss_fn(predictions.to(self.device), targets.to(self.device))
+                loss = self.loss_fn(predictions.to(self.device), targets.to(self.device))
 
-                boundary_weight = 1000.0
+                '''boundary_weight = 10.0
 
                 # New loss calculation to improve boundary predictions
                 loss = self.loss_fn(predictions.to(self.device), targets.to(self.device))  # Calculate the base loss for all points
@@ -37,7 +39,10 @@ class Trainer:
                 boundary_mask = torch.zeros_like(targets.to(self.device))
                 boundary_mask[:, 0] = boundary_weight  # First point in each sequence
                 boundary_mask[:, -1] = boundary_weight  # Last point in each sequence
-                boundary_mask[targets == -10.0] = boundary_weight  # Gap points
+                if Parameters.normalize_values:
+                    boundary_mask[targets == 0.0] = boundary_weight  # Gap points
+                else:
+                    boundary_mask[targets == -10.0] = boundary_weight  # Gap points
 
                 # Apply the boundary mask
                 weighted_loss = loss * boundary_mask
@@ -46,9 +51,14 @@ class Trainer:
                 # Backward pass
                 self.optimizer.zero_grad()
                 final_loss.backward()
+                self.optimizer.step()'''
+
+                # Backward pass
+                self.optimizer.zero_grad()
+                loss.backward()
                 self.optimizer.step()
 
-                loss_values[epoch] = final_loss
+                loss_values[epoch] = loss
 
                 # Learning rate that decays linearly (comment out this block if you want a constant learning rate)
                 for param_group in self.optimizer.param_groups:
