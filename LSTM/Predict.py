@@ -62,7 +62,7 @@ def predict_iterative():
 
     return current_series, predicted_series
 
-def predict_batch():
+def predict_batch(start=Parameters.series_prediction_start):
     if Parameters.prediction_mode == "forecast_forward":
         current_series, sample = create_sample_prediction(Parameters.path_test_data)
     else:
@@ -73,13 +73,13 @@ def predict_batch():
     predicted_series = predicted_series.reshape((predicted_series.size, 1))
 
     if Parameters.prediction_mode == "forecast_forward":
-        predicted_series[Parameters.series_prediction_start:
-                         Parameters.series_prediction_start + Parameters.length_of_prediction] = predict(
-            predicted_series[Parameters.series_prediction_start - Parameters.lookback:
-                             Parameters.series_prediction_start])
+        predicted_series[start:
+                         start + Parameters.length_of_prediction] = predict(
+            predicted_series[start - Parameters.lookback:
+                             start])
     else:
-        predicted_series[Parameters.series_prediction_start:
-                         Parameters.series_prediction_start + Parameters.length_of_prediction] = predict(sample)
+        predicted_series[start:
+                         start + Parameters.length_of_prediction] = predict(sample)
 
     #for i in range(Parameters.series_prediction_start):
     #    predicted_series[i] = np.nan

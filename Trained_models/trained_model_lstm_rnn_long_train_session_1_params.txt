@@ -1,0 +1,32 @@
+Training parameters
+-------------------
+
+Training file info:
+Dataset: C:\Users\Hansk\PycharmProjects\Gap_fill_time_series\data\NDBC - Train\44040h2008 - Train.csv
+Column or row: column
+Column index: 13
+
+Samples & targets creation:
+Prediction mode: fill_gap
+Lookback: 50
+Lookforward: 50
+Number of sample-targets per series: 10000
+Total number of series: 1
+
+Training:
+Epochs: 2500
+Learning rate: 0.001
+Momentum: 0.9
+Weight decay: 0.0005
+Batch size: 64
+
+Network info:
+Number of layers: 1
+Hidden layer size: 300
+
+Prediction parameters:
+Length of prediction (gap length): 50
+
+Results after training:
+Loss: TODO
+Accuracy: TODO

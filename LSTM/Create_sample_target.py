@@ -78,7 +78,6 @@ def create_sample_target_gap_training(path):
             start = random.randint(0, series_length - lookback - length_of_prediction - 1 - lookforward)
 
             sample = current_series.copy()[start:start + lookback + Parameters.length_of_prediction + lookforward]
-            sample[lookback:lookback + Parameters.length_of_prediction] = -10.0  # TODO: instead of this, add another parallel binary feature to indicate if a value is in a gap or not
             for k in range(50):
                 sample[k+50] = -k
             target = current_series.copy()[start + lookback:start + lookback + Parameters.length_of_prediction]
