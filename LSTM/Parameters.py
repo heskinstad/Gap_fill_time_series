@@ -1,6 +1,6 @@
 import os
 
-mode = "tete"  # "train" or "predict"
+mode = "predict"  # "train" or "predict"
 prediction_mode = "fill_gap"  # "forecast_forward to predict future states only, "fill_gap" to use data before and after gap to predict fill
 
 # Paths
