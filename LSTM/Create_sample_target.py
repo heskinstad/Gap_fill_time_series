@@ -112,3 +112,15 @@ def create_sample_gap_prediction(path):
         sample = Normalize(sample, Parameters.data_max_value, Parameters.data_min_value)
 
     return current_series, sample
+
+
+def create_sample_target_ARIMA(path):
+    if Parameters.column_or_row == "row":
+        current_series = np.array(process_csv_row(path, Parameters.prediction_series_row), dtype=float)
+    else:
+        current_series = np.array(process_csv_column(path, Parameters.prediction_series_column), dtype=float)
+
+    sample = current_series[Parameters.series_prediction_start - Parameters.lookback:Parameters.series_prediction_start]
+    target = current_series[Parameters.series_prediction_start:Parameters.series_prediction_start + Parameters.length_of_prediction]
+
+    return sample, target
