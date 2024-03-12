@@ -114,17 +114,14 @@ def create_sample_gap_prediction(path):
     return current_series, sample
 
 
-def create_sample_target_ARIMA(path, reverse=False):
+def create_sample_target_ARIMA(path):
     if Parameters.column_or_row == "row":
         current_series = np.array(process_csv_row(path, Parameters.prediction_series_row), dtype=float)
     else:
         current_series = np.array(process_csv_column(path, Parameters.prediction_series_column), dtype=float)
 
-    if not reverse:
-        sample_before = current_series[Parameters.series_prediction_start - Parameters.lookback:Parameters.series_prediction_start]
-        target = current_series[Parameters.series_prediction_start:Parameters.series_prediction_start + Parameters.length_of_prediction]
-    else:
-        sample_before = np.flip(current_series[Parameters.series_prediction_start + Parameters.length_of_prediction:Parameters.series_prediction_start + Parameters.length_of_prediction + Parameters.lookforward])
-        target = np.flip(current_series[Parameters.series_prediction_start:Parameters.series_prediction_start + Parameters.length_of_prediction])
+    sample_before = current_series[Parameters.series_prediction_start - Parameters.lookback:Parameters.series_prediction_start]
+    target = current_series[Parameters.series_prediction_start:Parameters.series_prediction_start + Parameters.length_of_prediction]
+    sample_after = current_series[Parameters.series_prediction_start + Parameters.length_of_prediction:Parameters.series_prediction_start + Parameters.length_of_prediction + Parameters.lookforward]
 
-    return sample_before, target
+    return sample_before, target, sample_after
