@@ -41,11 +41,17 @@ model_fit_backward = model_backward.fit()
 
 # Forecast the next n steps
 forecast_forward = model_fit_forward.forecast(steps=Parameters.length_of_prediction)
-forecast_backward = model_fit_backward.forecast(steps=Parameters.length_of_prediction)
+forecast_backward = np.flip(model_fit_backward.forecast(steps=Parameters.length_of_prediction))
+
+# Get weighted average element-wise from the two forecast arrays
+weights = np.arange(0, 1, 1.0/Parameters.length_of_prediction, dtype=float)
+forecast_weighted_average = np.empty(Parameters.length_of_prediction, dtype=float)
+for i in range(len(forecast_weighted_average)):
+    forecast_weighted_average[i] = forecast_forward[i] * abs(weights[i] - 1) + forecast_backward[i] * weights[i]
 
 # Generate the date range for the forecast
-forecast_dates_forward = pd.date_range(start=index_sample_before[-1], periods=Parameters.length_of_prediction + 1, freq='H')[1:]
-forecast_dates_backward = pd.date_range(start=index_sample_after[-1], periods=Parameters.length_of_prediction + 1, freq='H')[1:]
+forecast_dates_forward = pd.date_range(start=index_sample_before[-1], periods=Parameters.length_of_prediction + 1, freq='H')[1:] #TODO: fix bug when length of lookback != lookforward
+forecast_dates_backward = pd.date_range(start=index_sample_after[-1], periods=Parameters.length_of_prediction + 1, freq='H')[1:] #TODO: and when length of prediction is different too
 
 # Prepare the target for plotting
 target_repositioned = np.empty(len(sample_before)+len(target))
@@ -55,7 +61,8 @@ target_dates = pd.date_range(start='2020-01-01', periods=len(target_repositioned
 plt.figure(figsize=(10, 6))
 plt.plot(sample_series_combined, label='Historical Data')
 plt.plot(forecast_dates_forward, forecast_forward, label='ARIMA Forecast forward')
-plt.plot(forecast_dates_backward, np.flip(forecast_backward), label='ARIMA Forecast backward')
+plt.plot(forecast_dates_backward, forecast_backward, label='ARIMA Forecast backward')
+plt.plot(forecast_dates_forward, forecast_weighted_average, label='ARIMA Forecast weighted average mean')
 plt.plot(target_series, label='True Data')
 plt.legend()
 plt.show()
