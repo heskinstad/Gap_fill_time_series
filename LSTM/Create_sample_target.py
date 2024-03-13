@@ -105,8 +105,8 @@ def create_sample_gap_prediction(path):
              Parameters.series_prediction_start - Parameters.lookback:Parameters.series_prediction_start +
              Parameters.length_of_prediction + Parameters.lookforward]
 
-    for k in range(50):
-        sample[k + 50] = -k
+    for i in range(Parameters.length_of_prediction):
+        sample[i + Parameters.lookback] = -i
 
     if Parameters.normalize_values:
         sample = Normalize(sample, Parameters.data_max_value, Parameters.data_min_value)
