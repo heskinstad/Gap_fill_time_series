@@ -41,7 +41,7 @@ class Trainer:
             # Train on the training data
             for batch_idx, (samples, targets) in enumerate(self.dataset):
                 # Forward pass
-                predictions = self.model(samples.to(self.device))
+                '''predictions = self.model(samples.to(self.device))
 
                 # Calculate the loss
                 #loss = self.loss_fn(predictions.to(self.device), targets.to(self.device))
@@ -59,7 +59,13 @@ class Trainer:
                 loss.backward()
                 self.optimizer.step()
 
-                loss_values[epoch] = loss
+                loss_values[epoch] = loss'''
+
+                self.model.zero_grad()
+                output = self.model(samples.to(self.device), targets, 50)
+                loss = self.loss_fn(output, targets)
+                loss.backward()
+                self.optimizer.step()
 
                 # Learning rate that decays linearly (comment out this block if you want a constant learning rate)
                 for param_group in self.optimizer.param_groups:

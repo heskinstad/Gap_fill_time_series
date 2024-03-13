@@ -7,6 +7,7 @@ import Parameters
 from Create_sample_target import create_sample_target_training, create_sample_target_gap_training
 from Dataset_loader import dataset_loader
 from Network_model_lstm_rnn import network_model_lstm_rnn
+from Network_model_seq2seq import network_model_seq2seq, model_encoder, model_decoder
 from Trainer import Trainer
 from Produce_parameters_log import Produce_log
 
@@ -32,8 +33,12 @@ def train_model():
 
     train_dataloader = DataLoader(dataset, batch_size=Parameters.batch_size, shuffle=True)
 
+    encoder = model_encoder(1, 150)
+    decoder = model_decoder(1, 150, 50)
+
     # Initialize model
-    model = network_model_lstm_rnn().to(device)
+    #model = network_model_lstm_rnn().to(device)
+    model = network_model_seq2seq(encoder, decoder, device).to(device)
 
     # Create a trainer
     trainer = Trainer(
