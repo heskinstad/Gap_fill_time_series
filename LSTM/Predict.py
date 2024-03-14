@@ -12,7 +12,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def predict(sample=None):
     # Load trained model
     model = network_model_lstm_rnn().to(device)
-    model.load_state_dict(torch.load(Parameters.path_trained_model))
+    model.load_state_dict(torch.load(Parameters.path_trained_model, map_location=device))
 
     # Load data
     if sample is None:
