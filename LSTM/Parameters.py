@@ -1,6 +1,6 @@
 import os
 
-mode = "predict"  # "train" or "predict"
+mode = "train"  # "train" or "predict"
 prediction_mode = "fill_gap"  # "forecast_forward to predict future states only, "fill_gap" to use data before and after gap to predict fill
 
 # Paths
@@ -10,6 +10,7 @@ path_trained_model = os.getcwd() + r"\Trained_models\trained_model_lstm_rnn_munk
 column_or_row = "column"  # If each entry in the dataset is formatted through columns or rows
 row_index = 1  # The row index to use, if entries ordered by rows
 column_index = 2  # The column index to use, if entries ordered by columns
+make_backup = True
 
 # Create sample-targets
 lookback = 50  # Input dimension

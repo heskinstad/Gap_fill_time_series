@@ -78,8 +78,8 @@ def create_sample_target_gap_training(path):
             start = random.randint(0, series_length - lookback - length_of_prediction - 1 - lookforward)
 
             sample = current_series.copy()[start:start + lookback + Parameters.length_of_prediction + lookforward]
-            for k in range(50):
-                sample[k+50] = -k
+            for k in range(length_of_prediction):
+                sample[k+lookback] = -k
             target = current_series.copy()[start + lookback:start + lookback + Parameters.length_of_prediction]
 
             sample = np.expand_dims(sample, axis=1)
@@ -105,8 +105,8 @@ def create_sample_gap_prediction(path):
              Parameters.series_prediction_start - Parameters.lookback:Parameters.series_prediction_start +
              Parameters.length_of_prediction + Parameters.lookforward]
 
-    for k in range(50):
-        sample[k + 50] = -k
+    for k in range(Parameters.length_of_prediction):
+        sample[k + Parameters.lookback] = -k
 
     if Parameters.normalize_values:
         sample = Normalize(sample, Parameters.data_max_value, Parameters.data_min_value)
