@@ -1,54 +1,33 @@
 import torch
 from torch import nn
-
-import Parameters
-
-
-'''class network_model_lstm_rnn(torch.nn.Module):
-
-    def __init__(self):
-        super().__init__()
-        self.lstm = nn.LSTM(input_size=Parameters.lookback, hidden_size=50, num_layers=1, batch_first=True)
-        self.linear = nn.Linear(50, 1)
-
-    def forward(self, x):
-        x, _ = self.lstm(x)
-        x = self.linear(x)
-        return x
-'''
-
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 
 
 class network_model_lstm_rnn(nn.Module):
-    def __init__(self, input_size=1, hidden_layer_size=Parameters.hidden_layer_size, output_size=Parameters.network_output_size, num_layers=Parameters.num_layers):
+    def __init__(self, input_size=1, hidden_layer_size=300, output_size=50, num_layers=1):
         super(network_model_lstm_rnn, self).__init__()
         self.hidden_layer_size = hidden_layer_size
-
-        # LSTM layer
+        self.num_layers = num_layers
         self.lstm = nn.LSTM(input_size, hidden_layer_size, num_layers, batch_first=True)
-
-        # Fully connected layer to get the output size to 10 (for 10 measurements)
         self.linear = nn.Linear(hidden_layer_size, output_size)
 
-    def forward(self, input_seq):
-        # Initializing hidden state for first input using method defined below
-        h0 = torch.zeros(Parameters.num_layers, input_seq.size(0), self.hidden_layer_size).requires_grad_().to(device)
-        c0 = torch.zeros(Parameters.num_layers, input_seq.size(0), self.hidden_layer_size).requires_grad_().to(device)
+    def forward(self, padded_samples, samples_lengths, padded_targets=None, targets_lengths=None):        # Pack the input sequence
+        #packed_input = pack_padded_sequence(input_seq, seq_lengths, batch_first=True, enforce_sorted=False)
+
+        # Initialize hidden state
+        h0 = torch.zeros(self.num_layers, padded_samples.size(0), self.hidden_layer_size).to(padded_samples.device)
+        c0 = torch.zeros(self.num_layers, padded_samples.size(0), self.hidden_layer_size).to(padded_samples.device)
 
         # Forward pass through LSTM layer
-        # lstm_out: tensor of shape (batch_size, seq_length, hidden_layer_size)
-        # hn, cn: tensors of shape (num_layers, batch_size, hidden_layer_size), containing the hidden and cell state of the last timestep
-        lstm_out, (hn, cn) = self.lstm(input_seq, (h0.detach(), c0.detach()))
+        packed_output, (hn, cn) = self.lstm(padded_samples, (h0, c0))
 
-        # Only take the output from the final timestep
-        # You might need to modify this, depending on how you want to structure your data
-        lstm_out = lstm_out[:, -1, :]
+        # If you want to work with the output as a padded sequence
+        output, output_lengths = pad_packed_sequence(packed_output, batch_first=True)
 
-        # Pass the final output of the LSTM to the linear layer
-        predictions = self.linear(lstm_out)
+        # Assuming you're only interested in the final output for each sequence for simplicity
+        # This might be different based on your specific use case
+        # For instance, you may want to run the output through another layer that supports variable lengths
+        # or handle variable-length predictions differently
+        final_outputs = self.linear(output)
 
-        # Reshape predictions to match the target tensor shape ([batch_size, 1, 1])
-        predictions = predictions.unsqueeze(-1)
-
-        return predictions
+        return final_outputs

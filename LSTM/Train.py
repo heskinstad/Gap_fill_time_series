@@ -1,11 +1,12 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
+from torch.nn.utils.rnn import pad_sequence
 from torch.utils.data import DataLoader
 
 import Parameters
-from Create_sample_target import create_sample_target_training, create_sample_target_gap_training
-from Dataset_loader import dataset_loader
+from Create_sample_target import create_sample_target_training, create_sample_target_gap_training, create_sample_target_gap_variable_length_training
+from Dataset_loader import dataset_loader, custom_collate_fn
 from Network_model_lstm_rnn import network_model_lstm_rnn
 from Trainer import Trainer
 from Produce_parameters_log import Produce_log
@@ -17,11 +18,15 @@ def train_model():
     if Parameters.prediction_mode == "forecast_forward":
         samples, targets = create_sample_target_training(Parameters.path_train_data)
     else:
-        samples, targets = create_sample_target_gap_training(Parameters.path_train_data)
+        #samples, targets = create_sample_target_gap_training(Parameters.path_train_data)
+        samples, targets = create_sample_target_gap_variable_length_training(Parameters.path_train_data)
 
     # Create tensors from data arrays
     tensor_samples = torch.from_numpy(samples).float()
     tensor_targets = torch.from_numpy(targets).float()
+
+    tensor_samples = pad_sequence(tensor_samples)
+    tensor_targets = pad_sequence(tensor_targets)
 
     print("Tensor shapes:")
     print("Samples: " + str(tensor_samples.shape))
@@ -30,7 +35,8 @@ def train_model():
     # Put samples and targets into a dataset
     dataset = dataset_loader(tensor_samples, tensor_targets)
 
-    train_dataloader = DataLoader(dataset, batch_size=Parameters.batch_size, shuffle=True)
+    #train_dataloader = DataLoader(dataset, batch_size=Parameters.batch_size, shuffle=True)
+    train_dataloader = DataLoader(dataset, batch_size=Parameters.batch_size, shuffle=True, collate_fn=custom_collate_fn)
 
     # Initialize model
     model = network_model_lstm_rnn().to(device)

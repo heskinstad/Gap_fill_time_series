@@ -15,7 +15,7 @@ make_backup = True
 # Create sample-targets
 lookback = 50  # Input dimension
 lookforward = 50  # Input dimension if prediction_mode is "fill_gap"
-num_of_sample_targets_per_series = 14500  # Number of samples (and corresponding targets) per complete data series
+num_of_sample_targets_per_series = 500  # Number of samples (and corresponding targets) per complete data series
 total_num_of_series = 1  # Number of data series, if the data is split between multiple rows/columns
 
 # Normalize data
