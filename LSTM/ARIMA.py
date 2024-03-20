@@ -60,8 +60,8 @@ target_dates = pd.date_range(start='2020-01-01', periods=len(target_repositioned
 # Plot the historical data and future predictions
 plt.figure(figsize=(10, 6))
 plt.plot(sample_series_combined, label='Historical Data')
-plt.plot(forecast_dates_forward, forecast_forward, label='ARIMA Forecast forward')
-plt.plot(forecast_dates_backward, forecast_backward, label='ARIMA Forecast backward')
+plt.plot(forecast_dates_forward, forecast_forward, '--', label='ARIMA Forecast forward')
+plt.plot(forecast_dates_backward, forecast_backward, '--', label='ARIMA Forecast backward')
 plt.plot(forecast_dates_forward, forecast_weighted_average, label='ARIMA Forecast weighted average mean')
 plt.plot(target_series, label='True Data')
 plt.legend()
