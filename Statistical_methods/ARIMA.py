@@ -1,7 +1,4 @@
-import datetime
-
 import pandas as pd
-from cartopy import mpl
 from statsmodels.tsa.arima.model import ARIMA
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -22,10 +19,10 @@ sample_between = np.empty(len(target), dtype=float)
 sample_between[:] = np.nan
 sample_combined = np.concatenate((sample_before, sample_between, sample_after))
 
-index_sample_before = pd.date_range(start='2020-01-01', periods=len(sample_before), freq='H')  # One point every hour
-index_target = pd.date_range(start='2020-01-01', periods=len(target_repositioned), freq='H')  # One point every hour
-index_sample_after = pd.date_range(start='2020-01-01', periods=len(sample_after), freq='H')  # One point every hour
-index_sample_combined = pd.date_range(start='2020-01-01', periods=len(sample_combined), freq='H')  # One point every hour
+index_sample_before = pd.date_range(start='2024-01-01', periods=len(sample_before), freq='H')  # One point every hour
+index_target = pd.date_range(start='2024-01-01', periods=len(target_repositioned), freq='H')  # One point every hour
+index_sample_after = pd.date_range(start='2024-01-01', periods=len(sample_after), freq='H')  # One point every hour
+index_sample_combined = pd.date_range(start='2024-01-01', periods=len(sample_combined), freq='H')  # One point every hour
 
 sample_series_before = pd.Series(sample_before, index_sample_before)
 target_series = pd.Series(target_repositioned, index_target)
@@ -33,7 +30,7 @@ sample_series_after = pd.Series(np.flip(sample_after), index_sample_after)  # Fl
 sample_series_combined = pd.Series(sample_combined, index_sample_combined)
 
 
-# Fit the ARIMA model (with p=1, d=1, q=1 as an example)
+# Fit the ARIMA model - ARIMA(p, d, q)
 model_forward = ARIMA(sample_series_before, order=(len(sample_before), 0, 4))
 model_fit_forward = model_forward.fit()
 model_backward = ARIMA(sample_series_after, order=(len(sample_after), 0, 4))
@@ -55,7 +52,13 @@ forecast_dates_backward = pd.date_range(start=index_sample_after[-1], periods=Pa
 
 # Prepare the target for plotting
 target_repositioned = np.empty(len(sample_before)+len(target))
-target_dates = pd.date_range(start='2020-01-01', periods=len(target_repositioned) + 1, freq='H')[1:]
+target_dates = pd.date_range(start='2024-01-01', periods=len(target_repositioned) + 1, freq='H')[1:]
+
+### MEAN SQUARED ERROR ###
+from sklearn.metrics import mean_squared_error
+print("Mean squared error: %.3f" % mean_squared_error(target_series[50:], forecast_weighted_average))
+##########################
+
 
 # Plot the historical data and future predictions
 plt.figure(figsize=(10, 6))

@@ -29,8 +29,10 @@ elif Parameters.mode == "test_accuracy":
     for i in range(10):
         start = random.randint(0, data_len - Parameters.lookback - Parameters.length_of_prediction - 1 - Parameters.lookforward)
         original_data, prediction = predict_batch(start)
-        original_data = original_data[Parameters.series_prediction_start:Parameters.series_prediction_start+Parameters.lookforward]
-        prediction = prediction[Parameters.series_prediction_start:Parameters.series_prediction_start+Parameters.lookforward]
+        original_data = original_data[
+                        Parameters.series_prediction_start:Parameters.series_prediction_start + Parameters.lookforward]
+        prediction = prediction[
+                     Parameters.series_prediction_start:Parameters.series_prediction_start + Parameters.lookforward]
 
         #accuracy_array[i] = mean_squared_error()
 

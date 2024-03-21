@@ -1,6 +1,5 @@
 import numpy as np
 import torch
-from matplotlib import pyplot as plt
 
 import Parameters
 from Network_model_lstm_rnn import network_model_lstm_rnn
@@ -25,7 +24,7 @@ def predict(sample=None):
             sample = sample.reshape((1, Parameters.lookback, 1))
         else:
             #sample = sample.reshape((1, Parameters.lookback + Parameters.length_of_prediction + Parameters.lookforward, 1))
-            sample = sample.reshape((1, Parameters.lookback+100, 1))
+            sample = sample.reshape((1, Parameters.lookback + 100, 1))
 
     # Create tensors from data arrays
     tensor_sample = torch.from_numpy(sample).float().to(device)

@@ -1,5 +1,5 @@
 import scipy.stats as stats, csv
-from Process_csv import process_csv_column
+from LSTM.Process_csv import process_csv_column
 
 water_munkholmen = process_csv_column('data/Munkholmen/all_hourly_fixed.csv', 2, True)
 air_lade = process_csv_column('data/NVE/Lade-Lufttemperatur-time.csv', 3, True)

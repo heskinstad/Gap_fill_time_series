@@ -2,8 +2,8 @@ import random
 import numpy as np
 
 import Parameters
-from Process_csv import process_csv_row, process_csv_column
-from Normalize import Normalize
+from LSTM.Process_csv import process_csv_row, process_csv_column
+from LSTM.Normalize import Normalize
 
 
 def create_sample_target_training(path):
@@ -104,9 +104,9 @@ def create_sample_gap_prediction(path):
 
     sample = current_series.copy()[
              Parameters.series_prediction_start - Parameters.lookback:Parameters.series_prediction_start +
-             Parameters.length_of_prediction + Parameters.lookforward]
+                                                                      Parameters.length_of_prediction + Parameters.lookforward]
 
-    sample[Parameters.lookback:Parameters.lookback+Parameters.length_of_prediction] = 0
+    sample[Parameters.lookback:Parameters.lookback + Parameters.length_of_prediction] = 0
 
     if Parameters.normalize_values:
         sample = Normalize(sample, Parameters.data_max_value, Parameters.data_min_value)
@@ -120,8 +120,11 @@ def create_sample_target_ARIMA(path):
     else:
         current_series = np.array(process_csv_column(path, Parameters.prediction_series_column), dtype=float)
 
-    sample_before = current_series[Parameters.series_prediction_start - Parameters.lookback:Parameters.series_prediction_start]
-    target = current_series[Parameters.series_prediction_start:Parameters.series_prediction_start + Parameters.length_of_prediction]
-    sample_after = current_series[Parameters.series_prediction_start + Parameters.length_of_prediction:Parameters.series_prediction_start + Parameters.length_of_prediction + Parameters.lookforward]
+    sample_before = current_series[
+                    Parameters.series_prediction_start - Parameters.lookback:Parameters.series_prediction_start]
+    target = current_series[
+             Parameters.series_prediction_start:Parameters.series_prediction_start + Parameters.length_of_prediction]
+    sample_after = current_series[
+                   Parameters.series_prediction_start + Parameters.length_of_prediction:Parameters.series_prediction_start + Parameters.length_of_prediction + Parameters.lookforward]
 
     return sample_before, target, sample_after

@@ -3,7 +3,7 @@ import math
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-from LSTM import Parameters
+import Parameters
 
 mpl.use('TkAgg')
 
