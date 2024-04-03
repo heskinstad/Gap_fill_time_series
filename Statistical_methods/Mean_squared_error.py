@@ -8,3 +8,8 @@ air_lade = process_csv_column('data/NVE/Lade-Lufttemperatur-time.csv', 3, True)
 mse = mean_squared_error(water_munkholmen[:8760], air_lade[:8760])
 
 print(mse)
+
+
+def get_mean_squared_error(array1, array2):
+
+    return mean_squared_error(array1, array2)

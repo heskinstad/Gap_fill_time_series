@@ -1,5 +1,6 @@
 import csv
 import numpy as np
+import pandas as pd
 
 
 # Reads a csv file and places all values of a specified column into its own array
@@ -18,6 +19,11 @@ def process_csv_column(path, column_index, has_header=True):
             column_data.append(float(row[column_index]))
 
     return column_data
+
+def process_csv_column_with_timestamps(path):
+    df = pd.read_csv(path)
+
+    return df
 
 # Reads a csv file and places all values of a specified row into its own array
 def process_csv_row(path, row_index):
