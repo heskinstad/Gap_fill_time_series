@@ -18,6 +18,20 @@ elif Parameters.mode == "predict":
     else:
         original_data, prediction = predict_iterative()
 
+    ### MEAN SQUARED/ABSOLUTE ERROR ###
+    from sklearn.metrics import mean_squared_error, mean_absolute_error
+    print("Mean squared error: %.3f" % mean_squared_error(
+        prediction[Parameters.series_prediction_start:
+        Parameters.series_prediction_start+Parameters.length_of_prediction],
+        original_data[Parameters.series_prediction_start:
+        Parameters.series_prediction_start+Parameters.length_of_prediction]))
+    print("Mean absolute error: %.3f" % mean_absolute_error(
+        prediction[Parameters.series_prediction_start:
+                   Parameters.series_prediction_start + Parameters.length_of_prediction],
+        original_data[Parameters.series_prediction_start:
+                      Parameters.series_prediction_start + Parameters.length_of_prediction]))
+    ##########################
+
     plot_data(original_data, prediction)
 
 elif Parameters.mode == "test_accuracy":

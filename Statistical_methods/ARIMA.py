@@ -31,9 +31,9 @@ sample_series_combined = pd.Series(sample_combined, index_sample_combined)
 
 
 # Fit the ARIMA model - ARIMA(p, d, q)
-model_forward = ARIMA(sample_series_before, order=(len(sample_before), 0, 4))
+model_forward = ARIMA(sample_series_before, order=(len(sample_before), 1, 1))
 model_fit_forward = model_forward.fit()
-model_backward = ARIMA(sample_series_after, order=(len(sample_after), 0, 4))
+model_backward = ARIMA(sample_series_after, order=(len(sample_after), 1, 1))
 model_fit_backward = model_backward.fit()
 
 # Forecast the next n steps
@@ -54,9 +54,10 @@ forecast_dates_backward = pd.date_range(start=index_sample_after[-1], periods=Pa
 target_repositioned = np.empty(len(sample_before)+len(target))
 target_dates = pd.date_range(start='2024-01-01', periods=len(target_repositioned) + 1, freq='H')[1:]
 
-### MEAN SQUARED ERROR ###
-from sklearn.metrics import mean_squared_error
-print("Mean squared error: %.3f" % mean_squared_error(target_series[50:], forecast_weighted_average))
+### MEAN SQUARED/ABSOLUTE ERROR ###
+from sklearn.metrics import mean_squared_error, mean_absolute_error
+print("Mean squared error: %.3f" % mean_squared_error(target_series[Parameters.lookback:], forecast_weighted_average))
+print("Mean absolute error: %.3f" % mean_absolute_error(target_series[Parameters.lookback:], forecast_weighted_average))
 ##########################
 
 

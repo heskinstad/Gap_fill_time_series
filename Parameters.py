@@ -33,7 +33,7 @@ batch_size = 64
 # Sample for prediction
 prediction_series_row = 1  # Which row from the dataset file to create samples from (if ordered by rows)
 prediction_series_column = 2  # Which column from the dataset file to create samples from (if ordered by columns)
-series_prediction_start = 330  # The starting point of the test dataset to predict from
+series_prediction_start = 984  # The starting point of the test dataset to predict from
 
 # Prediction parameters
 length_of_prediction = 50  # Size of gap, predict all at once (batch) - BATCH MODE IS AUTOMATICALLY CHOSEN IF THIS VARIABLE IS GREATER THAN 1
