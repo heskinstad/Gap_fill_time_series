@@ -8,6 +8,7 @@ from LSTM.Create_sample_target import create_sample_target_gap_training, create_
 from Train import train_model
 from Predict import predict_iterative, predict_batch
 from Plot_data import plot_data
+from sklearn.metrics import mean_squared_error, mean_absolute_error
 
 if Parameters.mode == "train":
     train_model()
@@ -19,7 +20,6 @@ elif Parameters.mode == "predict":
         original_data, prediction = predict_iterative()
 
     ### MEAN SQUARED/ABSOLUTE ERROR ###
-    from sklearn.metrics import mean_squared_error, mean_absolute_error
     print("Mean squared error: %.3f" % mean_squared_error(
         prediction[Parameters.series_prediction_start:
         Parameters.series_prediction_start+Parameters.length_of_prediction],
@@ -34,21 +34,42 @@ elif Parameters.mode == "predict":
 
     plot_data(original_data, prediction)
 
-elif Parameters.mode == "test_accuracy":
-    accuracy_array = np.empty(10)
+elif Parameters.mode == "accuracy":
+    number_of_tests = Parameters.number_of_tests
 
     data_len, _ = predict_batch()
-    data_len = data_len.size()
+    data_len = len(data_len)
 
-    for i in range(10):
-        start = random.randint(0, data_len - Parameters.lookback - Parameters.length_of_prediction - 1 - Parameters.lookforward)
+    mse_array = np.empty(number_of_tests)
+    mae_array = np.empty(number_of_tests)
+
+    for test in range(number_of_tests):
+        start = random.randint(Parameters.lookback, data_len - Parameters.lookback - Parameters.length_of_prediction - 1)
+        #print(start)
         original_data, prediction = predict_batch(start)
+        #plot_data(original_data, prediction, start)
         original_data = original_data[
-                        Parameters.series_prediction_start:Parameters.series_prediction_start + Parameters.lookforward]
+                        start:start + Parameters.length_of_prediction]
         prediction = prediction[
-                     Parameters.series_prediction_start:Parameters.series_prediction_start + Parameters.lookforward]
+                     start:start + Parameters.length_of_prediction]
 
-        #accuracy_array[i] = mean_squared_error()
+        mse_array[test] = mean_squared_error(original_data, prediction)
+        mae_array[test] = mean_absolute_error(original_data, prediction)
+
+    mse = 0.0
+    mae = 0.0
+
+    for i in range(len(mse_array)):
+        mse += mse_array[i]
+        mae += mae_array[i]
+
+    mse /= number_of_tests
+    mae /= number_of_tests
+
+    #print(mse_array)
+
+    print("Mean squared error: %.3f" % mse)
+    print("Mean absolute error: %.3f" % mae)
 
 elif Parameters.mode == "tete":
     samples, targets = create_sample_target_gap_training(Parameters.path_train_data)

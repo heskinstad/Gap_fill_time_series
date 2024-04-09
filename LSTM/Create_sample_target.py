@@ -96,14 +96,14 @@ def create_sample_target_gap_training(path):
     return samples, targets
 
 
-def create_sample_gap_prediction(path):
+def create_sample_gap_prediction(path, start=Parameters.series_prediction_start):
     if Parameters.column_or_row == "row":
         current_series = np.array(process_csv_row(path, Parameters.prediction_series_row), dtype=float)
     else:
         current_series = np.array(process_csv_column(path, Parameters.prediction_series_column), dtype=float)
 
     sample = current_series.copy()[
-             Parameters.series_prediction_start - Parameters.lookback:Parameters.series_prediction_start +
+             start - Parameters.lookback:start +
                                                                       Parameters.length_of_prediction + Parameters.lookforward]
 
     sample[Parameters.lookback:Parameters.lookback + Parameters.length_of_prediction] = 0

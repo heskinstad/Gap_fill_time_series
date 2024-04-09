@@ -1,6 +1,6 @@
 import os
 
-mode = "predict"  # "train" or "predict"
+mode = "accuracy"  # "train" or "predict"
 prediction_mode = "fill_gap"  # "forecast_forward to predict future states only, "fill_gap" to use data before and after gap to predict fill
 
 # Paths
@@ -47,5 +47,5 @@ if prediction_mode == "forecast_forward":
 else:
     network_output_size = length_of_prediction
 
-
-# ARIMA parameters
+# Accuracy testing
+number_of_tests = 1000
