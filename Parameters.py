@@ -1,6 +1,6 @@
 import os
 
-mode = "accuracy"  # "train" or "predict"
+mode = "predict"  # "train" or "predict"
 prediction_mode = "fill_gap"  # "forecast_forward to predict future states only, "fill_gap" to use data before and after gap to predict fill
 
 # Paths
@@ -33,7 +33,7 @@ batch_size = 64
 # Sample for prediction
 prediction_series_row = 1  # Which row from the dataset file to create samples from (if ordered by rows)
 prediction_series_column = 2  # Which column from the dataset file to create samples from (if ordered by columns)
-series_prediction_start = 984  # The starting point of the test dataset to predict from
+series_prediction_start = 835  # The starting point of the test dataset to predict from
 
 # Prediction parameters
 length_of_prediction = 50  # Size of gap, predict all at once (batch) - BATCH MODE IS AUTOMATICALLY CHOSEN IF THIS VARIABLE IS GREATER THAN 1
@@ -48,4 +48,5 @@ else:
     network_output_size = length_of_prediction
 
 # Accuracy testing
-number_of_tests = 1000
+test_type = "interpolation"
+number_of_tests = 100

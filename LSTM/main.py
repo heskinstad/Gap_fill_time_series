@@ -3,8 +3,12 @@ import random
 import numpy as np
 from matplotlib import pyplot as plt
 
+import time
+
 import Parameters
 from LSTM.Create_sample_target import create_sample_target_gap_training, create_sample_gap_prediction
+from Statistical_methods.ARIMA import run_ARIMA
+from Statistical_methods.Linear_interpolation import run_linear_interpolation
 from Train import train_model
 from Predict import predict_iterative, predict_batch
 from Plot_data import plot_data
@@ -43,18 +47,28 @@ elif Parameters.mode == "accuracy":
     mse_array = np.empty(number_of_tests)
     mae_array = np.empty(number_of_tests)
 
+    time_start = time.time()
+
     for test in range(number_of_tests):
         start = random.randint(Parameters.lookback, data_len - Parameters.lookback - Parameters.length_of_prediction - 1)
         #print(start)
-        original_data, prediction = predict_batch(start)
-        #plot_data(original_data, prediction, start)
-        original_data = original_data[
-                        start:start + Parameters.length_of_prediction]
-        prediction = prediction[
-                     start:start + Parameters.length_of_prediction]
 
-        mse_array[test] = mean_squared_error(original_data, prediction)
-        mae_array[test] = mean_absolute_error(original_data, prediction)
+        if Parameters.test_type == "LSTM":
+            original_data, prediction = predict_batch(start)
+            #plot_data(original_data, prediction, start)
+            original_data = original_data[
+                            start:start + Parameters.length_of_prediction]
+            prediction = prediction[
+                         start:start + Parameters.length_of_prediction]
+
+            mse_array[test] = mean_squared_error(original_data, prediction)
+            mae_array[test] = mean_absolute_error(original_data, prediction)
+
+        elif Parameters.test_type == "ARIMA":
+            mse_array[test], mae_array[test] = run_ARIMA(start, show_plot=False)
+
+        elif Parameters.test_type == "interpolation":
+            mse_array[test], mae_array[test] = run_linear_interpolation(start, show_plot=False)
 
     mse = 0.0
     mae = 0.0
@@ -66,10 +80,10 @@ elif Parameters.mode == "accuracy":
     mse /= number_of_tests
     mae /= number_of_tests
 
-    #print(mse_array)
+    print("Average mean squared error after %d runs: %.3f" % (number_of_tests, mse))
+    print("Average mean absolute error after %d runs: %.3f" % (number_of_tests, mae))
 
-    print("Mean squared error: %.3f" % mse)
-    print("Mean absolute error: %.3f" % mae)
+    print("Time elapsed: %.3f seconds" % (time.time() - time_start))
 
 elif Parameters.mode == "tete":
     samples, targets = create_sample_target_gap_training(Parameters.path_train_data)

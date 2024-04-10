@@ -114,17 +114,17 @@ def create_sample_gap_prediction(path, start=Parameters.series_prediction_start)
     return current_series, sample
 
 
-def create_sample_target_ARIMA(path):
+def create_sample_target_ARIMA(path, start=Parameters.series_prediction_start):
     if Parameters.column_or_row == "row":
         current_series = np.array(process_csv_row(path, Parameters.prediction_series_row), dtype=float)
     else:
         current_series = np.array(process_csv_column(path, Parameters.prediction_series_column), dtype=float)
 
     sample_before = current_series[
-                    Parameters.series_prediction_start - Parameters.lookback:Parameters.series_prediction_start]
+                    start - Parameters.lookback:start]
     target = current_series[
-             Parameters.series_prediction_start:Parameters.series_prediction_start + Parameters.length_of_prediction]
+             start:start + Parameters.length_of_prediction]
     sample_after = current_series[
-                   Parameters.series_prediction_start + Parameters.length_of_prediction:Parameters.series_prediction_start + Parameters.length_of_prediction + Parameters.lookforward]
+                   start + Parameters.length_of_prediction:start + Parameters.length_of_prediction + Parameters.lookforward]
 
     return sample_before, target, sample_after
