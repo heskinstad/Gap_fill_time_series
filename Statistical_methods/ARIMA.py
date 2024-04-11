@@ -33,9 +33,9 @@ def run_ARIMA(start=Parameters.series_prediction_start, show_plot=True):
 
 
     # Fit the ARIMA model - ARIMA(p, d, q)
-    model_forward = ARIMA(sample_series_before, order=(len(sample_before), 1, 1))
+    model_forward = ARIMA(sample_series_before, order=(Parameters.p, Parameters.d, Parameters.q))
     model_fit_forward = model_forward.fit()
-    model_backward = ARIMA(sample_series_after, order=(len(sample_after), 1, 1))
+    model_backward = ARIMA(sample_series_after, order=(Parameters.p, Parameters.d, Parameters.q))
     model_fit_backward = model_backward.fit()
 
     # Forecast the next n steps
@@ -49,8 +49,8 @@ def run_ARIMA(start=Parameters.series_prediction_start, show_plot=True):
         forecast_weighted_average[i] = forecast_forward[i] * abs(weights[i] - 1) + forecast_backward[i] * weights[i]
 
     # Generate the date range for the forecast
-    forecast_dates_forward = pd.date_range(start=index_sample_before[-1], periods=Parameters.length_of_prediction + 1, freq='H')[1:] #TODO: fix bug when length of lookback != lookforward
-    forecast_dates_backward = pd.date_range(start=index_sample_after[-1], periods=Parameters.length_of_prediction + 1, freq='H')[1:] #TODO: and when length of prediction is different too
+    forecast_dates_forward = pd.date_range(start=index_sample_before[-1], periods=Parameters.length_of_prediction + 1, freq='H')[1:]
+    forecast_dates_backward = pd.date_range(start=index_sample_after[-1], periods=Parameters.length_of_prediction + 1, freq='H')[1:]
 
     # Prepare the target for plotting
     target_repositioned = np.empty(len(sample_before)+len(target))

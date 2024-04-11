@@ -50,3 +50,8 @@ else:
 # Accuracy testing
 test_type = "interpolation"
 number_of_tests = 100
+
+# ARIMA parameters
+p = lookback
+d = 1
+q = 50
