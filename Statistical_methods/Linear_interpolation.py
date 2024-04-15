@@ -38,8 +38,8 @@ def run_linear_interpolation(start=Parameters.series_prediction_start, show_plot
         plt.plot(np.concatenate((empty_array, interpolated_gap, empty_array)))
         plt.show()
 
-        print("Mean squared error: %.3f" % mse)
-        print("Mean absolute error: %.3f" % mae)
+        print("Linear Interpolation Mean squared error: %.3f" % mse)
+        print("Linear Interpolation Mean absolute error: %.3f" % mae)
 
     return mse, mae
 

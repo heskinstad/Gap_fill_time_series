@@ -71,9 +71,9 @@ def run_ARIMA(start=Parameters.series_prediction_start, show_plot=True):
         plt.legend()
         plt.show()
 
-        print("Mean squared error: %.3f" % mse)
-        print("Mean absolute error: %.3f" % mae)
+        print("ARIMA Mean squared error: %.3f" % mse)
+        print("ARIMA Mean absolute error: %.3f" % mae)
 
     return mse, mae
 
-run_ARIMA()
+#run_ARIMA()

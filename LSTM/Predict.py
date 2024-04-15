@@ -24,7 +24,10 @@ def predict(sample=None):
             sample = sample.reshape((1, Parameters.lookback, 1))
         else:
             #sample = sample.reshape((1, Parameters.lookback + Parameters.length_of_prediction + Parameters.lookforward, 1))
-            sample = sample.reshape((1, Parameters.lookback + 100, 1))
+            if Parameters.multiple_variables:
+                sample = sample.reshape((1, Parameters.lookback + 100, 2))
+            else:
+                sample = sample.reshape((1, Parameters.lookback + 100, 1))
 
     # Create tensors from data arrays
     tensor_sample = torch.from_numpy(sample).float().to(device)

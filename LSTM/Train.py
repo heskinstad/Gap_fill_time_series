@@ -17,7 +17,7 @@ def train_model():
     if Parameters.prediction_mode == "forecast_forward":
         samples, targets = create_sample_target_training(Parameters.path_train_data)
     else:
-        samples, targets = create_sample_target_gap_training(Parameters.path_train_data)
+        samples, targets = create_sample_target_gap_training(Parameters.path_train_data, Parameters.path_train_data_other_variable)
 
     # Create tensors from data arrays
     tensor_samples = torch.from_numpy(samples).float()

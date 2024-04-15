@@ -2,14 +2,23 @@ import os
 
 mode = "predict"  # "train" or "predict"
 prediction_mode = "fill_gap"  # "forecast_forward to predict future states only, "fill_gap" to use data before and after gap to predict fill
+multiple_variables = True
+
+if multiple_variables:
+    input_size = 2
+else:
+    input_size = 1
 
 # Paths
 path_train_data = os.getcwd() + r"\data\Munkholmen\2022-2023all_hourly.csv"  # Path to training dataset
+path_train_data_other_variable = os.getcwd() + r"\data\Munkholmen\Munkholmen_air_temp_hourly_2022-2023.csv"  # Path to training dataset (variable #2)
 path_test_data = os.getcwd() + r"\data\Munkholmen\2024all_hourly.csv"  # Path to test dataset
-path_trained_model = os.getcwd() + r"\Trained_models\trained_model_lstm_rnn_munkholmen.pt"  # Path to trained model
+path_test_data_other_variable = os.getcwd() + r"\data\Munkholmen\Munkholmen_air_temp_hourly_2024.csv"  # Path to test dataset (variable #2)
+path_trained_model = os.getcwd() + r"\Trained_models\trained_model_lstm_rnn_munkholmen_multiple_variables_munkholmen_air.pt"  # Path to trained model
 column_or_row = "column"  # If each entry in the dataset is formatted through columns or rows
 row_index = 1  # The row index to use, if entries ordered by rows
 column_index = 2  # The column index to use, if entries ordered by columns
+column_index_second_variable = 2
 make_backup = True
 
 # Create sample-targets
@@ -24,7 +33,7 @@ data_max_value = 30
 data_min_value = -10
 
 # Training
-epochs = 4000
+epochs = 2000
 learning_rate = 0.0004
 momentum = 0.9
 weight_decay = 0.0005
@@ -33,7 +42,8 @@ batch_size = 64
 # Sample for prediction
 prediction_series_row = 1  # Which row from the dataset file to create samples from (if ordered by rows)
 prediction_series_column = 2  # Which column from the dataset file to create samples from (if ordered by columns)
-series_prediction_start = 835  # The starting point of the test dataset to predict from
+prediction_series_column_second_variable = 2
+series_prediction_start = 1050  # The starting point of the test dataset to predict from
 
 # Prediction parameters
 length_of_prediction = 50  # Size of gap, predict all at once (batch) - BATCH MODE IS AUTOMATICALLY CHOSEN IF THIS VARIABLE IS GREATER THAN 1

@@ -24,12 +24,12 @@ elif Parameters.mode == "predict":
         original_data, prediction = predict_iterative()
 
     ### MEAN SQUARED/ABSOLUTE ERROR ###
-    print("Mean squared error: %.3f" % mean_squared_error(
+    print("RNN LSTM Mean squared error: %.3f" % mean_squared_error(
         prediction[Parameters.series_prediction_start:
         Parameters.series_prediction_start+Parameters.length_of_prediction],
         original_data[Parameters.series_prediction_start:
         Parameters.series_prediction_start+Parameters.length_of_prediction]))
-    print("Mean absolute error: %.3f" % mean_absolute_error(
+    print("RNN LSTM Mean absolute error: %.3f" % mean_absolute_error(
         prediction[Parameters.series_prediction_start:
                    Parameters.series_prediction_start + Parameters.length_of_prediction],
         original_data[Parameters.series_prediction_start:
