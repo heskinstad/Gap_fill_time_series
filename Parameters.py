@@ -1,6 +1,6 @@
 import os
 
-mode = "predict"  # "train" or "predict"
+mode = "accuracy"  # "train" or "predict" or "accuracy"
 prediction_mode = "fill_gap"  # "forecast_forward to predict future states only, "fill_gap" to use data before and after gap to predict fill
 multiple_variables = True
 
@@ -11,10 +11,10 @@ else:
 
 # Paths
 path_train_data = os.getcwd() + r"\data\Munkholmen\2022-2023all_hourly.csv"  # Path to training dataset
-path_train_data_other_variable = os.getcwd() + r"\data\Munkholmen\Munkholmen_air_temp_hourly_2022-2023.csv"  # Path to training dataset (variable #2)
+path_train_data_other_variable = os.getcwd() + r"\data\Munkholmen\Munkholmen_sound_speed_hourly_subtracted_divided_2022-2023.csv"  # Path to training dataset (variable #2)
 path_test_data = os.getcwd() + r"\data\Munkholmen\2024all_hourly.csv"  # Path to test dataset
-path_test_data_other_variable = os.getcwd() + r"\data\Munkholmen\Munkholmen_air_temp_hourly_2024.csv"  # Path to test dataset (variable #2)
-path_trained_model = os.getcwd() + r"\Trained_models\trained_model_lstm_rnn_munkholmen_multiple_variables_munkholmen_air.pt"  # Path to trained model
+path_test_data_other_variable = os.getcwd() + r"\data\Munkholmen\Munkholmen_sound_speed_hourly_subtracted_divided_2024.csv"  # Path to test dataset (variable #2)
+path_trained_model = os.getcwd() + r"\Trained_models\trained_model_lstm_rnn_munkholmen_sound_speed.pt"  # Path to trained model
 column_or_row = "column"  # If each entry in the dataset is formatted through columns or rows
 row_index = 1  # The row index to use, if entries ordered by rows
 column_index = 2  # The column index to use, if entries ordered by columns
@@ -50,16 +50,16 @@ length_of_prediction = 50  # Size of gap, predict all at once (batch) - BATCH MO
 number_of_predicts = 1000  # Size of gap, predict one by one (iterative)
 
 # Network
-num_layers = 1  # Number of hidden layers in the network
-hidden_layer_size = 300
+num_layers = 1  # Number of hidden layers in the network --> Usually 1
+hidden_layer_size = 300  # Usually 300
 if prediction_mode == "forecast_forward":
     network_output_size = length_of_prediction
 else:
     network_output_size = length_of_prediction
 
 # Accuracy testing
-test_type = "interpolation"
-number_of_tests = 100
+test_type = "LSTM"
+number_of_tests = 1000
 
 # ARIMA parameters
 p = lookback

@@ -55,7 +55,7 @@ elif Parameters.mode == "accuracy":
 
         if Parameters.test_type == "LSTM":
             original_data, prediction = predict_batch(start)
-            #plot_data(original_data, prediction, start)
+            plot_data(original_data, prediction, start)
             original_data = original_data[
                             start:start + Parameters.length_of_prediction]
             prediction = prediction[

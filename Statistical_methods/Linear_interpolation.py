@@ -43,4 +43,4 @@ def run_linear_interpolation(start=Parameters.series_prediction_start, show_plot
 
     return mse, mae
 
-run_linear_interpolation()
+#run_linear_interpolation()
