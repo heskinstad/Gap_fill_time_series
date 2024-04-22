@@ -2,7 +2,7 @@ import os
 
 mode = "accuracy"  # "train" or "predict" or "accuracy"
 prediction_mode = "fill_gap"  # "forecast_forward to predict future states only, "fill_gap" to use data before and after gap to predict fill
-multiple_variables = True
+multiple_variables = False
 
 if multiple_variables:
     input_size = 2
@@ -14,7 +14,7 @@ path_train_data = os.getcwd() + r"\data\Munkholmen\2022-2023all_hourly.csv"  # P
 path_train_data_other_variable = os.getcwd() + r"\data\Munkholmen\Munkholmen_sound_speed_hourly_subtracted_divided_2022-2023.csv"  # Path to training dataset (variable #2)
 path_test_data = os.getcwd() + r"\data\Munkholmen\2024all_hourly.csv"  # Path to test dataset
 path_test_data_other_variable = os.getcwd() + r"\data\Munkholmen\Munkholmen_sound_speed_hourly_subtracted_divided_2024.csv"  # Path to test dataset (variable #2)
-path_trained_model = os.getcwd() + r"\Trained_models\trained_model_lstm_rnn_munkholmen_sound_speed.pt"  # Path to trained model
+path_trained_model = os.getcwd() + r"\Trained_models\trained_model_lstm_rnn_munkholmen_tete2.pt"  # Path to trained model
 column_or_row = "column"  # If each entry in the dataset is formatted through columns or rows
 row_index = 1  # The row index to use, if entries ordered by rows
 column_index = 2  # The column index to use, if entries ordered by columns
@@ -33,11 +33,11 @@ data_max_value = 30
 data_min_value = -10
 
 # Training
-epochs = 2000
+epochs = 200
 learning_rate = 0.0004
 momentum = 0.9
 weight_decay = 0.0005
-batch_size = 64
+batch_size = 8
 
 # Sample for prediction
 prediction_series_row = 1  # Which row from the dataset file to create samples from (if ordered by rows)
