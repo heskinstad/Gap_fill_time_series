@@ -85,6 +85,8 @@ def create_sample_target_gap_training(path, path2):
             sample = current_series.copy()[start:start + lookback + Parameters.length_of_prediction + lookforward]
             if Parameters.multiple_variables:
                 sample2 = current_series_2.copy()[start:start + lookback + Parameters.length_of_prediction + lookforward]
+                sample2[:lookback] = 0
+                sample2[lookback+length_of_prediction:] = 0
 
             sample[lookback:lookback+length_of_prediction] = 0
 
@@ -118,8 +120,9 @@ def create_sample_gap_prediction(path, start=Parameters.series_prediction_start)
     sample = current_series.copy()[
              start - Parameters.lookback:start + Parameters.length_of_prediction + Parameters.lookforward]
     if Parameters.multiple_variables:
-        sample2 = current_series_2.copy()[
-             start - Parameters.lookback:start + Parameters.length_of_prediction + Parameters.lookforward]
+        sample2 = current_series_2.copy()[start - Parameters.lookback:start + Parameters.length_of_prediction + Parameters.lookforward]
+        sample2[:Parameters.lookback] = 0
+        sample2[Parameters.lookback + Parameters.length_of_prediction:] = 0
 
     sample[Parameters.lookback:Parameters.lookback + Parameters.length_of_prediction] = 0
 

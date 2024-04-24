@@ -2,7 +2,7 @@ import scipy.stats as stats, csv
 from LSTM.Process_csv import process_csv_column
 
 water_munkholmen = process_csv_column('data/Munkholmen/all_hourly_fixed.csv', 2, True)
-air_lade = process_csv_column('data/NVE/Lade-Lufttemperatur-time.csv', 3, True)
+air_lade = process_csv_column('data/MET/MET_Munkholmen_temp_hourly_all.csv', 2, True)
 
 print(len(water_munkholmen))
 print(len(air_lade))

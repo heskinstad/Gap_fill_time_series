@@ -70,7 +70,7 @@ class Trainer:
                     print('Epoch: {} | Batch: {} | Loss: {}'.format(epoch, batch_idx, loss.item()))
 
             # Save backup
-            if Parameters.make_backup and epoch % 500 == 0 and epoch != 0:
+            if Parameters.make_backup and epoch % 250 == 0 and epoch != 0:
                 torch.save(self.model.state_dict(), os.getcwd() + r'\Model_bkps\model_bkp' + str(epoch) + '.pt')
 
         # Plot the loss

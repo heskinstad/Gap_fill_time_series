@@ -2,7 +2,7 @@ import os
 
 mode = "accuracy"  # "train" or "predict" or "accuracy"
 prediction_mode = "fill_gap"  # "forecast_forward to predict future states only, "fill_gap" to use data before and after gap to predict fill
-multiple_variables = False
+multiple_variables = True
 
 if multiple_variables:
     input_size = 2
@@ -11,10 +11,10 @@ else:
 
 # Paths
 path_train_data = os.getcwd() + r"\data\Munkholmen\2022-2023all_hourly.csv"  # Path to training dataset
-path_train_data_other_variable = os.getcwd() + r"\data\Munkholmen\Munkholmen_sound_speed_hourly_subtracted_divided_2022-2023.csv"  # Path to training dataset (variable #2)
+path_train_data_other_variable = os.getcwd() + r"\data\MET\MET_Munkholmen_temp_hourly_2022-2023.csv"  # Path to training dataset (variable #2)
 path_test_data = os.getcwd() + r"\data\Munkholmen\2024all_hourly.csv"  # Path to test dataset
-path_test_data_other_variable = os.getcwd() + r"\data\Munkholmen\Munkholmen_sound_speed_hourly_subtracted_divided_2024.csv"  # Path to test dataset (variable #2)
-path_trained_model = os.getcwd() + r"\Trained_models\trained_model_lstm_rnn_munkholmen_tete2.pt"  # Path to trained model
+path_test_data_other_variable = os.getcwd() + r"\data\MET\MET_Munkholmen_temp_hourly_2024.csv"  # Path to test dataset (variable #2)
+path_trained_model = os.getcwd() + r"\Trained_models\trained_model_lstm_rnn_munkholmen_10_50_10_multivariate_500_ep.pt"  # Path to trained model
 column_or_row = "column"  # If each entry in the dataset is formatted through columns or rows
 row_index = 1  # The row index to use, if entries ordered by rows
 column_index = 2  # The column index to use, if entries ordered by columns
@@ -22,8 +22,8 @@ column_index_second_variable = 2
 make_backup = True
 
 # Create sample-targets
-lookback = 50  # Input dimension
-lookforward = 50  # Input dimension if prediction_mode is "fill_gap"
+lookback = 10  # Input dimension
+lookforward = 10  # Input dimension if prediction_mode is "fill_gap"
 num_of_sample_targets_per_series = 14500  # Number of samples (and corresponding targets) per complete data series
 total_num_of_series = 1  # Number of data series, if the data is split between multiple rows/columns
 
@@ -33,11 +33,11 @@ data_max_value = 30
 data_min_value = -10
 
 # Training
-epochs = 200
-learning_rate = 0.0004
+epochs = 500
+learning_rate = 0.0032
 momentum = 0.9
 weight_decay = 0.0005
-batch_size = 8
+batch_size = 32
 
 # Sample for prediction
 prediction_series_row = 1  # Which row from the dataset file to create samples from (if ordered by rows)
@@ -59,7 +59,7 @@ else:
 
 # Accuracy testing
 test_type = "LSTM"
-number_of_tests = 1000
+number_of_tests = 10000
 
 # ARIMA parameters
 p = lookback
