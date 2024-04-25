@@ -48,10 +48,10 @@ def train_model():
     )
 
     # Train the model
-    trainer.train(epochs=Parameters.epochs)
+    loss = trainer.train(epochs=Parameters.epochs)
 
     # Save the model
     torch.save(model.state_dict(), Parameters.path_trained_model)
 
     # Produce training log file
-    Produce_log()
+    Produce_log(loss)

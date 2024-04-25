@@ -78,3 +78,5 @@ class Trainer:
         plt.xlabel("Loss")
         plt.savefig(os.getcwd() + r"\Trained_models\trained_model_lstm_rnn_figure.png")
         plt.show()
+
+        return loss_values[-1]

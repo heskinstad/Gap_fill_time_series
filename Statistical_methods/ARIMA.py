@@ -8,7 +8,7 @@ import numpy as np
 
 mpl.use('TkAgg')
 
-def run_ARIMA(start=Parameters.series_prediction_start, show_plot=True):
+def run_ARIMA(start=Parameters.series_prediction_start):
 
     # Retrieve sample and target from file
     sample_before, target, sample_after = create_sample_target_ARIMA(Parameters.path_test_data, start)
@@ -60,7 +60,7 @@ def run_ARIMA(start=Parameters.series_prediction_start, show_plot=True):
     mse = mean_squared_error(target_series[Parameters.lookback:], forecast_weighted_average)
     mae = mean_absolute_error(target_series[Parameters.lookback:], forecast_weighted_average)
 
-    if show_plot:
+    if Parameters.plot_every_test:
         # Plot the historical data and future predictions
         plt.figure(figsize=(10, 6))
         plt.plot(sample_series_combined, label='Historical Data')
@@ -71,6 +71,7 @@ def run_ARIMA(start=Parameters.series_prediction_start, show_plot=True):
         plt.legend()
         plt.show()
 
+    if Parameters.error_every_test:
         print("ARIMA Mean squared error: %.3f" % mse)
         print("ARIMA Mean absolute error: %.3f" % mae)
 

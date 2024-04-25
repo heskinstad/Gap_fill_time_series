@@ -8,8 +8,9 @@ mpl.use('TkAgg')
 
 import Parameters
 from LSTM.Create_sample_target import create_sample_gap_prediction
+from LSTM.Plot_data import plot_data
 
-def run_linear_interpolation(start=Parameters.series_prediction_start, show_plot=True):
+def run_linear_interpolation(start=Parameters.series_prediction_start):
     data, _ = create_sample_gap_prediction(Parameters.path_test_data)
 
     true_gap = data.copy()[start:start+Parameters.length_of_prediction]
@@ -29,7 +30,12 @@ def run_linear_interpolation(start=Parameters.series_prediction_start, show_plot
     mse = mean_squared_error(true_gap, interpolated_gap)
     mae = mean_absolute_error(true_gap, interpolated_gap)
 
-    if show_plot:
+    #interpolated_gap2 = data.copy()
+    #interpolated_gap2[start:start+Parameters.length_of_prediction] = interpolated_gap
+
+    if Parameters.plot_every_test:
+        #plot_data(data, interpolated_gap2)
+
         #plt.plot(true_gap)
         plt.plot(data[start-10:start+Parameters.length_of_prediction+10])
         #plt.plot(interpolated_gap)
@@ -38,6 +44,7 @@ def run_linear_interpolation(start=Parameters.series_prediction_start, show_plot
         plt.plot(np.concatenate((empty_array, interpolated_gap, empty_array)))
         plt.show()
 
+    if Parameters.error_every_test:
         print("Linear Interpolation Mean squared error: %.3f" % mse)
         print("Linear Interpolation Mean absolute error: %.3f" % mae)
 

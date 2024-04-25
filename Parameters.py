@@ -14,7 +14,8 @@ path_train_data = os.getcwd() + r"\data\Munkholmen\2022-2023all_hourly.csv"  # P
 path_train_data_other_variable = os.getcwd() + r"\data\MET\MET_Munkholmen_temp_hourly_2022-2023.csv"  # Path to training dataset (variable #2)
 path_test_data = os.getcwd() + r"\data\Munkholmen\2024all_hourly.csv"  # Path to test dataset
 path_test_data_other_variable = os.getcwd() + r"\data\MET\MET_Munkholmen_temp_hourly_2024.csv"  # Path to test dataset (variable #2)
-path_trained_model = os.getcwd() + r"\Trained_models\trained_model_lstm_rnn_munkholmen_10_50_10_multivariate_500_ep.pt"  # Path to trained model
+model_name = "trained_model_lstm_rnn_munkholmen_10_50_10_multivariate_500_ep"
+path_trained_model = os.getcwd() + r"\Trained_models\\" + model_name + ".pt"  # Path to trained model
 column_or_row = "column"  # If each entry in the dataset is formatted through columns or rows
 row_index = 1  # The row index to use, if entries ordered by rows
 column_index = 2  # The column index to use, if entries ordered by columns
@@ -58,8 +59,10 @@ else:
     network_output_size = length_of_prediction
 
 # Accuracy testing
-test_type = "LSTM"
-number_of_tests = 10000
+test_type = "LSTM"  # "LSTM" or "ARIMA" or "interpolation"
+number_of_tests = 1000
+plot_every_test = True
+error_every_test = True
 
 # ARIMA parameters
 p = lookback

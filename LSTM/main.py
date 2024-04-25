@@ -51,24 +51,31 @@ elif Parameters.mode == "accuracy":
 
     for test in range(number_of_tests):
         start = random.randint(Parameters.lookback, data_len - Parameters.lookback - Parameters.length_of_prediction - 1)
-        #print(start)
 
         if Parameters.test_type == "LSTM":
             original_data, prediction = predict_batch(start)
-            plot_data(original_data, prediction, start)
+            if Parameters.plot_every_test:
+                plot_data(original_data, prediction, start)
             original_data = original_data[
                             start:start + Parameters.length_of_prediction]
             prediction = prediction[
                          start:start + Parameters.length_of_prediction]
 
-            mse_array[test] = mean_squared_error(original_data, prediction)
-            mae_array[test] = mean_absolute_error(original_data, prediction)
+            mse = mean_squared_error(original_data, prediction)
+            mae = mean_absolute_error(original_data, prediction)
+
+            mse_array[test] = mse
+            mae_array[test] = mae
+
+            if Parameters.error_every_test:
+                print("RNN LSTM Mean squared error: %.3f" % mse)
+                print("RNN LSTM Mean absolute error: %.3f" % mae)
 
         elif Parameters.test_type == "ARIMA":
-            mse_array[test], mae_array[test] = run_ARIMA(start, show_plot=False)
+            mse_array[test], mae_array[test] = run_ARIMA(start)
 
         elif Parameters.test_type == "interpolation":
-            mse_array[test], mae_array[test] = run_linear_interpolation(start, show_plot=False)
+            mse_array[test], mae_array[test] = run_linear_interpolation(start)
 
     mse = 0.0
     mae = 0.0

@@ -3,16 +3,22 @@ import Parameters, os
 
 # Writes a log of parameters used in latest trained model
 # Because it's neat to have when trying to replicate previous results ;)
-def Produce_log():
-    path = os.getcwd() + r"\Trained_models\trained_model_lstm_rnn_params.txt"
+def Produce_log(loss):
+    model_name = Parameters.model_name
+
+    multiple_variables = "Multiple variables: " + str(Parameters.multiple_variables)
+    input_size = "Input size: " + str(Parameters.input_size)
 
     dataset = "Dataset: " + Parameters.path_train_data
+    dataset2 = "Dataset 2nd variable: " + Parameters.path_train_data_other_variable
     column_or_row = "Column or row: " + Parameters.column_or_row
     index = "Column index: " + str(
         Parameters.column_index) if Parameters.column_or_row == "column" else "Row index: " + str(Parameters.row_index)
+    index_2nd = "Column index 2nd variable: " + str(Parameters.column_index_second_variable)
 
     prediction_mode = "Prediction mode: " + str(Parameters.prediction_mode)
     lookback = "Lookback: " + str(Parameters.lookback)
+    length_of_prediction = "Length of prediction (gap size): " + str(Parameters.length_of_prediction)
     lookforward = "Lookforward: " + str(Parameters.lookforward)
     num_of_sample_targets_per_series = "Number of sample-targets per series: " + str(
         Parameters.num_of_sample_targets_per_series)
@@ -27,25 +33,26 @@ def Produce_log():
     num_layers = "Number of layers: " + str(Parameters.num_layers)
     hidden_layer_size = "Hidden layer size: " + str(Parameters.hidden_layer_size)
 
-    length_of_prediction = "Length of prediction (gap length): " + str(Parameters.length_of_prediction)
+    loss = "Loss: " + str(loss)
 
-    loss = "Loss: " + "TODO"
-    accuracy = "Accuracy: " + "TODO"
-
-
-
-    f = open(path, "w")
+    f = open(os.getcwd() + r"\Trained_models\\" + model_name + "_log.txt", "w")
 
     f.write(
-        "Training parameters\n" +
+        "Name: " + model_name +
+        "\n\nTraining parameters\n" +
         "-------------------\n" +
         "\nTraining file info:\n" +
         dataset + "\n" +
+        dataset2 + "\n" +
         column_or_row + "\n" +
         index + "\n" +
+        index_2nd + "\n" +
+        multiple_variables + "\n" +
+        input_size + "\n" +
         "\nSamples & targets creation:\n" +
         prediction_mode + "\n" +
         lookback + "\n" +
+        length_of_prediction + "\n" +
         lookforward + "\n" +
         num_of_sample_targets_per_series + "\n" +
         total_num_of_series + "\n" +
@@ -61,8 +68,7 @@ def Produce_log():
         "\nPrediction parameters:\n" +
         length_of_prediction + "\n" +
         "\nResults after training:\n" +
-        loss + "\n" +
-        accuracy
+        loss
     )
 
     f.close()
