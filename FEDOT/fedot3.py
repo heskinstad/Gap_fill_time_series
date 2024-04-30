@@ -66,7 +66,7 @@ def generate_synthetic_data(length: int = 2000, periods: int = 10):
 synthetic_time_series = generate_synthetic_data()
 
 # We will predict 100 values in the future
-len_forecast = 100
+len_forecast = 50
 
 synthetic_time_series, _ = Create_sample_target.create_sample_gap_prediction(os.getcwd() + r"\data\Munkholmen\all_hourly_fixed.csv")[:2000]
 
@@ -163,8 +163,8 @@ def plot_results(actual_time_series, predicted_values, len_train_data, y_name='P
     plt.show()
 
 predicted_values = make_forecast(train_data = train_data,
-                                 len_forecast = 100,
-                                 window_size = 400)
+                                 len_forecast = len_forecast,
+                                 window_size = 2000)
 
 plot_results(actual_time_series = synthetic_time_series,
              predicted_values = predicted_values,
