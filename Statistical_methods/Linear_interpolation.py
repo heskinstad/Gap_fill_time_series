@@ -11,7 +11,7 @@ from LSTM.Create_sample_target import create_sample_gap_prediction
 from LSTM.Plot_data import plot_data
 
 def run_linear_interpolation(start=Parameters.series_prediction_start):
-    data, _ = create_sample_gap_prediction(Parameters.path_test_data)
+    data, _, _ = create_sample_gap_prediction(Parameters.path_test_data)
 
     true_gap = data.copy()[start:start+Parameters.length_of_prediction]
 

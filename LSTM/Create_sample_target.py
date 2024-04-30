@@ -132,7 +132,10 @@ def create_sample_gap_prediction(path, start=Parameters.series_prediction_start)
     if Parameters.normalize_values:
         sample = Normalize(sample, Parameters.data_max_value, Parameters.data_min_value)
 
-    return current_series, sample
+    if not Parameters.multiple_variables:
+        sample2 = 0
+
+    return current_series, sample, sample2
 
 
 def create_sample_target_ARIMA(path, start=Parameters.series_prediction_start):

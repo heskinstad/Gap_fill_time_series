@@ -1,8 +1,8 @@
 import os
 
-mode = "train"  # "train" or "predict" or "accuracy"
+mode = "accuracy"  # "train" or "predict" or "accuracy"
 prediction_mode = "fill_gap"  # "forecast_forward to predict future states only, "fill_gap" to use data before and after gap to predict fill
-multiple_variables = True
+multiple_variables = False
 
 if multiple_variables:
     input_size = 2
@@ -14,7 +14,7 @@ path_train_data = os.getcwd() + r"\data\Munkholmen\2022-2023all_hourly.csv"  # P
 path_train_data_other_variable = os.getcwd() + r"\data\MET\MET_Munkholmen_temp_hourly_2022-2023.csv"  # Path to training dataset (variable #2)
 path_test_data = os.getcwd() + r"\data\Munkholmen\2024all_hourly.csv"  # Path to test dataset
 path_test_data_other_variable = os.getcwd() + r"\data\MET\MET_Munkholmen_temp_hourly_2024.csv"  # Path to test dataset (variable #2)
-model_name = "trained_model_lstm_rnn_munkholmen_10_300_10_multivariate_100_ep"
+model_name = "trained_model_lstm_rnn_munkholmen_25_150_25_500_ep"
 path_trained_model = os.getcwd() + r"\Trained_models\\" + model_name + ".pt"  # Path to trained model
 column_or_row = "column"  # If each entry in the dataset is formatted through columns or rows
 row_index = 1  # The row index to use, if entries ordered by rows
@@ -23,8 +23,8 @@ column_index_second_variable = 2
 make_backup = True
 
 # Create sample-targets
-lookback = 10  # Input dimension
-lookforward = 10  # Input dimension if prediction_mode is "fill_gap"
+lookback = 25  # Input dimension
+lookforward = 25  # Input dimension if prediction_mode is "fill_gap"
 num_of_sample_targets_per_series = 14500  # Number of samples (and corresponding targets) per complete data series
 total_num_of_series = 1  # Number of data series, if the data is split between multiple rows/columns
 
@@ -47,7 +47,7 @@ prediction_series_column_second_variable = 2
 series_prediction_start = 1050  # The starting point of the test dataset to predict from
 
 # Prediction parameters
-length_of_prediction = 300  # Size of gap, predict all at once (batch) - BATCH MODE IS AUTOMATICALLY CHOSEN IF THIS VARIABLE IS GREATER THAN 1
+length_of_prediction = 150  # Size of gap, predict all at once (batch) - BATCH MODE IS AUTOMATICALLY CHOSEN IF THIS VARIABLE IS GREATER THAN 1
 number_of_predicts = 1000  # Size of gap, predict one by one (iterative)
 
 # Network

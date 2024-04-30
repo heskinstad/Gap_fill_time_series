@@ -41,7 +41,7 @@ elif Parameters.mode == "predict":
 elif Parameters.mode == "accuracy":
     number_of_tests = Parameters.number_of_tests
 
-    data_len, _ = predict_batch()
+    data_len, _, _ = predict_batch()
     data_len = len(data_len)
 
     mse_array = np.empty(number_of_tests)
@@ -53,9 +53,9 @@ elif Parameters.mode == "accuracy":
         start = random.randint(Parameters.lookback, data_len - Parameters.lookback - Parameters.length_of_prediction - 1)
 
         if Parameters.test_type == "LSTM":
-            original_data, prediction = predict_batch(start)
+            original_data, prediction, sample2 = predict_batch(start)
             if Parameters.plot_every_test:
-                plot_data(original_data, prediction, start)
+                plot_data(original_data, prediction, start, sample2=sample2)
             original_data = original_data[
                             start:start + Parameters.length_of_prediction]
             prediction = prediction[
@@ -101,7 +101,7 @@ elif Parameters.mode == "tete":
     plt.show()
 
 else:
-    current_series, sample = create_sample_gap_prediction(Parameters.path_test_data)
+    current_series, sample, _ = create_sample_gap_prediction(Parameters.path_test_data)
     print(sample)
     plt.plot(sample)
     plt.show()

@@ -18,7 +18,7 @@ def predict(sample=None):
         if Parameters.prediction_mode == "forecast_forward":
             _, sample = create_sample_prediction(Parameters.path_test_data)
         else:
-            _, sample = create_sample_gap_prediction(Parameters.path_test_data)
+            _, sample, _ = create_sample_gap_prediction(Parameters.path_test_data)
     else:
         if Parameters.prediction_mode == "forecast_forward":
             sample = sample.reshape((1, Parameters.lookback, 1))
@@ -68,8 +68,9 @@ def predict_iterative():
 def predict_batch(start=Parameters.series_prediction_start):
     if Parameters.prediction_mode == "forecast_forward":
         current_series, sample = create_sample_prediction(Parameters.path_test_data)
+        sample2 = 0
     else:
-        current_series, sample = create_sample_gap_prediction(Parameters.path_test_data, start)
+        current_series, sample, sample2 = create_sample_gap_prediction(Parameters.path_test_data, start)
 
     predicted_series = current_series.copy()
 
@@ -81,7 +82,6 @@ def predict_batch(start=Parameters.series_prediction_start):
             predicted_series[start - Parameters.lookback:
                              start])
     else:
-        predicted_series[start:
-                         start + Parameters.length_of_prediction] = predict(sample)
+        predicted_series[start:start + Parameters.length_of_prediction] = predict(sample)
 
-    return current_series, predicted_series
+    return current_series, predicted_series, sample2
