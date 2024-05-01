@@ -19,7 +19,7 @@ if Parameters.mode == "train":
 
 elif Parameters.mode == "predict":
     if Parameters.length_of_prediction > 1:
-        original_data, prediction = predict_batch()
+        original_data, prediction, sample2 = predict_batch()
     else:
         original_data, prediction = predict_iterative()
 
@@ -36,7 +36,7 @@ elif Parameters.mode == "predict":
                       Parameters.series_prediction_start + Parameters.length_of_prediction]))
     ##########################
 
-    plot_data(original_data, prediction)
+    plot_data(original_data, prediction, sample2=sample2)
 
 elif Parameters.mode == "accuracy":
     number_of_tests = Parameters.number_of_tests
