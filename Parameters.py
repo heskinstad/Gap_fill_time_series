@@ -61,10 +61,12 @@ else:
 # Accuracy testing
 test_type = "LSTM"  # "LSTM" or "ARIMA" or "interpolation"
 number_of_tests = 1000
+accuracy_tests_from_array = False
+test_positions = [160, 360, 560, 760, 960, 1160, 1360]
 plot_every_test = True
 error_every_test = True
 
 # ARIMA parameters
 p = lookback
 d = 1
-q = 50
+q = lookback
