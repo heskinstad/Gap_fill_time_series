@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 
 # Load your CSV file
-df = pd.read_csv('tete.csv.csv')
+df = pd.read_csv('tete.csv')
 
 # Prepare a list to store DataFrame chunks for each day
 dataframes = []
