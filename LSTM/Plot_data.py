@@ -31,11 +31,11 @@ def plot_data(original_data, predicted_data, start=Parameters.series_prediction_
     ax.plot(dates, predicted_data, c='r', label="Prediction")
     ax.plot(dates, missing_data, '--', c='b', label="True data (missing)")
 
-    '''if Parameters.multiple_variables:
+    if Parameters.multiple_variables:
         sample2_array = np.empty(100+Parameters.lookback+Parameters.lookforward+Parameters.length_of_prediction)
         sample2_array[:] = math.nan
-        sample2_array[100+Parameters.lookback:100+Parameters.lookback+Parameters.length_of_prediction] = sample2[10:-10]
-        ax.plot(dates, sample2_array, '--', c='y', label="True data (2nd dataset)")'''
+        sample2_array[100+Parameters.lookback:100+Parameters.lookback+Parameters.length_of_prediction] = sample2[Parameters.lookback:-Parameters.lookforward]
+        ax.plot(dates[:Parameters.lookback+Parameters.lookforward+150], sample2_array, '--', c='y', label="True data (MET)")
 
     ax.axvline(dates[100], ls='--', color='darkgray')
     ax.axvline(dates[100 + Parameters.lookback + Parameters.length_of_prediction + Parameters.lookforward], ls='--', color='darkgray')
