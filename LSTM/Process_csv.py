@@ -4,7 +4,7 @@ import pandas as pd
 
 
 # Reads a csv file and places all values of a specified column into its own array
-def process_csv_column(path, column_index, has_header=True):
+def process_csv_column(path, column_index, has_header=True, datetimes=False):
     column_data = []
 
     with open(path, mode='r') as file:
@@ -15,8 +15,12 @@ def process_csv_column(path, column_index, has_header=True):
             next(reader, None)
 
         # Iterate over each row. Add data from column
-        for row in reader:
-            column_data.append(float(row[column_index]))
+        if datetimes:
+            for row in reader:
+                column_data.append(row[column_index])
+        else:
+            for row in reader:
+                column_data.append(float(row[column_index]))
 
     return column_data
 
