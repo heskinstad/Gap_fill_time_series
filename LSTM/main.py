@@ -73,7 +73,7 @@ elif Parameters.mode == "accuracy":
                 print("RNN LSTM Mean absolute error: %.3f" % mae)
 
             if Parameters.plot_every_test:
-                plot_data(original_data, prediction, start, sample2=sample2)
+                plot_data(original_data, prediction_crop.flatten(), start, sample2=sample2)
 
         elif Parameters.test_type == "ARIMA":
             mse_array[test], mae_array[test] = run_ARIMA(start)

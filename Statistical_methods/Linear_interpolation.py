@@ -33,20 +33,20 @@ def run_linear_interpolation(start=Parameters.series_prediction_start):
     #interpolated_gap2 = data.copy()
     #interpolated_gap2[start:start+Parameters.length_of_prediction] = interpolated_gap
 
-    if Parameters.plot_every_test:
-        #plot_data(data, interpolated_gap2)
-
-        #plt.plot(true_gap)
-        plt.plot(data[start-10:start+Parameters.length_of_prediction+10])
-        #plt.plot(interpolated_gap)
-        empty_array = np.empty(10)
-        empty_array[:] = np.nan
-        plt.plot(np.concatenate((empty_array, interpolated_gap, empty_array)))
-        plt.show()
-
     if Parameters.error_every_test:
         print("Linear Interpolation Mean squared error: %.3f" % mse)
         print("Linear Interpolation Mean absolute error: %.3f" % mae)
+
+    if Parameters.plot_every_test:
+        plot_data(data, interpolated_gap, start=start)
+
+        #plt.plot(true_gap)
+        #plt.plot(data[start-10:start+Parameters.length_of_prediction+10])
+        #plt.plot(interpolated_gap)
+        #empty_array = np.empty(10)
+        #empty_array[:] = np.nan
+        #plt.plot(np.concatenate((empty_array, interpolated_gap, empty_array)))
+        #plt.show()
 
     return mse, mae
 
