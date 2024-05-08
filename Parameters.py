@@ -6,16 +6,17 @@ multiple_variables = True
 
 if multiple_variables:
     input_size = 2
+    multivariate_str = "multivariate_"
 else:
     input_size = 1
+    multivariate_str = ""
 
-# Paths
+# Paths data
 path_train_data = os.getcwd() + r"\data\Munkholmen\2022-2023all_hourly.csv"  # Path to training dataset
 path_train_data_other_variable = os.getcwd() + r"\data\MET\MET_Munkholmen_temp_hourly_2022-2023.csv"  # Path to training dataset (variable #2)
 path_test_data = os.getcwd() + r"\data\Munkholmen\2024all_hourly.csv"  # Path to test dataset
 path_test_data_other_variable = os.getcwd() + r"\data\MET\MET_Munkholmen_temp_hourly_2024.csv"  # Path to test dataset (variable #2)
-model_name = "trained_model_lstm_rnn_munkholmen_50_50_50_multivariate_2000_ep"
-path_trained_model = os.getcwd() + r"\Trained_models\\" + model_name + ".pt"  # Path to trained model
+
 column_or_row = "column"  # If each entry in the dataset is formatted through columns or rows
 row_index = 1  # The row index to use, if entries ordered by rows
 column_index = 2  # The column index to use, if entries ordered by columns
@@ -57,6 +58,10 @@ if prediction_mode == "forecast_forward":
     network_output_size = length_of_prediction
 else:
     network_output_size = length_of_prediction
+
+# Path trained model
+model_name = "trained_model_lstm_rnn_munkholmen_{0}_{1}_{2}_{3}{4}_ep".format(lookback, length_of_prediction, lookforward, multivariate_str, epochs)
+path_trained_model = os.getcwd() + r"\Trained_models\\" + model_name + ".pt"  # Path to trained model
 
 # Accuracy testing
 test_type = "LSTM"  # "LSTM" or "ARIMA" or "interpolation"

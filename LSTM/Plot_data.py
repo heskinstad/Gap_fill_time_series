@@ -35,7 +35,7 @@ def plot_data(original_data, predicted_data, start=Parameters.series_prediction_
         sample2_array = np.empty(100+Parameters.lookback+Parameters.lookforward+Parameters.length_of_prediction)
         sample2_array[:] = math.nan
         sample2_array[100+Parameters.lookback:100+Parameters.lookback+Parameters.length_of_prediction] = sample2[Parameters.lookback:-Parameters.lookforward]
-        ax.plot(dates[:Parameters.lookback+Parameters.lookforward+150], sample2_array, '--', c='y', label="True data (MET)")
+        ax.plot(dates[:Parameters.lookback+Parameters.lookforward+Parameters.length_of_prediction+100], sample2_array, '--', c='y', label="True data (MET)")
 
     ax.axvline(dates[100], ls='--', color='darkgray')
     ax.axvline(dates[100 + Parameters.lookback + Parameters.length_of_prediction + Parameters.lookforward], ls='--', color='darkgray')
