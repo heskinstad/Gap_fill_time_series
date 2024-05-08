@@ -64,11 +64,11 @@ model_name = "trained_model_lstm_rnn_munkholmen_{0}_{1}_{2}_{3}{4}_ep".format(lo
 path_trained_model = os.getcwd() + r"\Trained_models\\" + model_name + ".pt"  # Path to trained model
 
 # Accuracy testing
-test_type = "interpolation"  # "LSTM" or "ARIMA" or "interpolation"
+test_type = "LSTM"  # "LSTM" or "ARIMA" or "interpolation"
 number_of_tests = 1000
 accuracy_tests_from_array = False
 test_positions = [160, 360, 560, 760, 960, 1160, 1360]
-plot_every_test = True
+plot_every_test = False
 error_every_test = True
 
 # ARIMA parameters

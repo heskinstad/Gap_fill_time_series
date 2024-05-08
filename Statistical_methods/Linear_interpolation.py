@@ -1,9 +1,11 @@
 import math
 
 import numpy as np
-from matplotlib import pyplot as plt
 
 import matplotlib as mpl
+from scipy.stats import pearsonr
+from sklearn.metrics import mean_squared_error, mean_absolute_error
+
 mpl.use('TkAgg')
 
 import Parameters
@@ -26,9 +28,9 @@ def run_linear_interpolation(start=Parameters.series_prediction_start):
 
     interpolated_gap = interpolated_gap[1:-1]
 
-    from sklearn.metrics import mean_squared_error, mean_absolute_error
     mse = mean_squared_error(true_gap, interpolated_gap)
     mae = mean_absolute_error(true_gap, interpolated_gap)
+    corr_coeff = pearsonr(true_gap, interpolated_gap)[0]
 
     #interpolated_gap2 = data.copy()
     #interpolated_gap2[start:start+Parameters.length_of_prediction] = interpolated_gap
@@ -36,6 +38,7 @@ def run_linear_interpolation(start=Parameters.series_prediction_start):
     if Parameters.error_every_test:
         print("Linear Interpolation Mean squared error: %.3f" % mse)
         print("Linear Interpolation Mean absolute error: %.3f" % mae)
+        print("Correlation Coefficient error: %.3f" % corr_coeff)
 
     if Parameters.plot_every_test:
         plot_data(data, interpolated_gap, start=start)
@@ -48,6 +51,6 @@ def run_linear_interpolation(start=Parameters.series_prediction_start):
         #plt.plot(np.concatenate((empty_array, interpolated_gap, empty_array)))
         #plt.show()
 
-    return mse, mae
+    return mse, mae, corr_coeff
 
 #run_linear_interpolation()
