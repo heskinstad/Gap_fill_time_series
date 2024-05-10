@@ -1,4 +1,7 @@
+import matplotlib
 import pandas as pd
+from matplotlib import ticker
+import matplotlib.dates as mdates
 from scipy.stats import pearsonr
 from statsmodels.tsa.arima.model import ARIMA
 from sklearn.metrics import mean_squared_error, mean_absolute_error
@@ -13,13 +16,15 @@ mpl.use('TkAgg')
 
 def run_ARIMA(start=Parameters.series_prediction_start):
 
+    start = start-Parameters.lookback  # Small error in code with setting the date. Easy solution
+
     values_before = 10
     if start < Parameters.lookback - 10:
         values_before = start - Parameters.lookback
     dates = pd.to_datetime(process_csv_column(Parameters.path_test_data, 1, has_header=True, datetimes=True))
 
     # Retrieve sample and target from file
-    sample_before, target, sample_after = create_sample_target_ARIMA(Parameters.path_test_data, start)
+    sample_before, target, sample_after = create_sample_target_ARIMA(Parameters.path_test_data, start+Parameters.lookback)
 
     target_repositioned = np.empty(len(sample_before) + len(target), dtype=float)
     target_repositioned[:] = np.nan
@@ -64,8 +69,8 @@ def run_ARIMA(start=Parameters.series_prediction_start):
     mae = mean_absolute_error(target_series[Parameters.lookback:], forecast_weighted_average)
     corr_coeff = pearsonr(target_series[Parameters.lookback:], forecast_weighted_average)[0]
 
-    data_before, _, _ = create_sample_target_ARIMA(Parameters.path_test_data, start-Parameters.lookback+1)
-    _, _, data_after = create_sample_target_ARIMA(Parameters.path_test_data, start+Parameters.lookforward-1)
+    data_before, _, _ = create_sample_target_ARIMA(Parameters.path_test_data, start+1)
+    _, _, data_after = create_sample_target_ARIMA(Parameters.path_test_data, start+Parameters.lookback+Parameters.lookforward-1)
 
     if Parameters.error_every_test:
         print("ARIMA Mean squared error: %.3f" % mse)
@@ -73,23 +78,30 @@ def run_ARIMA(start=Parameters.series_prediction_start):
         print("Correlation Coefficient error: %.3f" % corr_coeff)
 
     if Parameters.plot_every_test:
-        # Plot the historical data and future predictions
-        plt.grid()
-        plt.plot(sample_series_combined, label='Historical Data', color='b')
-        plt.plot(dates[start-values_before+1:start+1], data_before[Parameters.lookback-values_before:Parameters.lookback], color='b')
-        plt.plot(dates[start+Parameters.lookback+Parameters.length_of_prediction+Parameters.lookforward:start+Parameters.lookback+Parameters.length_of_prediction+Parameters.lookforward+10], data_after[:10], color='b')
-        plt.plot(forecast_dates_forward, forecast_forward, '--', label='Forecast forward', color='g', alpha=0.5)
-        plt.plot(forecast_dates_backward, forecast_backward, '--', label='Forecast backward', color='y', alpha=0.5)
-        plt.plot(forecast_dates_forward, forecast_weighted_average, label='Forecast weighted average mean', color='r')
-        plt.plot(target_series, '--', label='True Data', color='b')
-        plt.axvspan(dates[start], dates[start+Parameters.lookback], facecolor='green', alpha=0.2,
+        fig, ax = plt.subplots(figsize=(8, 7))
+        ax.grid()
+        ax.plot(sample_series_combined, label='True Data', color='b')
+        ax.plot(dates[start-values_before+1:start+1], data_before[Parameters.lookback-values_before:Parameters.lookback], color='b')
+        ax.plot(dates[start+Parameters.lookback+Parameters.length_of_prediction+Parameters.lookforward-1:start+Parameters.lookback+Parameters.length_of_prediction+Parameters.lookforward+9], data_after[:10], color='b')
+        ax.plot(target_series, '--', label='True Data (missing)', color='b')
+        ax.plot(forecast_dates_forward, forecast_weighted_average, label='Forecast weighted average mean', color='r')
+        ax.plot(forecast_dates_forward, forecast_forward, '--', label='Forecast forward', color='g', alpha=0.5)
+        ax.plot(forecast_dates_backward, forecast_backward, '--', label='Forecast backward', color='y', alpha=0.5)
+        ax.axvspan(dates[start], dates[start+Parameters.lookback], facecolor='green', alpha=0.2,
                    label="Available data pre-gap")
-        plt.axvspan(dates[start+Parameters.lookback+Parameters.length_of_prediction], dates[
+        ax.axvspan(dates[start+Parameters.lookback+Parameters.length_of_prediction], dates[
             start+Parameters.lookback+Parameters.length_of_prediction+Parameters.lookforward],
                    facecolor='yellow', alpha=0.2, label="Available data post-gap")
-        plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.18), ncol=3, fancybox=True, shadow=True)
-        plt.xlabel("Time (date)")
+        plt.legend(loc='upper center', bbox_to_anchor=(0.5,-0.1), ncol=3)
+        plt.xlabel("Time\n(date)")
+        ax.xaxis.set_label_coords(-0.1, -0.038)
         plt.ylabel("Temperature (°C)")
+        plt.title("ARIMA gap-fill")
+        plt.subplots_adjust(bottom=0.2)
+        plt.subplots_adjust(left=0.12)
+        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y\n%m-%d'))
+        plt.gca().xaxis.set_major_locator(ticker.MaxNLocator(10))  # Limit the number of x-axis ticks
+        plt.gcf().autofmt_xdate()  # Auto rotates dates for better readability
         plt.show()
 
     return mse, mae, corr_coeff

@@ -49,7 +49,7 @@ elif Parameters.mode == "accuracy":
     if Parameters.accuracy_tests_from_array:
         mse_array = np.empty(len(Parameters.test_positions))
         mae_array = np.empty(len(Parameters.test_positions))
-        corr_coeff = np.empty(len(Parameters.test_positions))
+        corr_coeff_array = np.empty(len(Parameters.test_positions))
     else:
         mse_array = np.empty(number_of_tests)
         mae_array = np.empty(number_of_tests)
