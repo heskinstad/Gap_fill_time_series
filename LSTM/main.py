@@ -9,6 +9,7 @@ from scipy.stats import pearsonr
 
 import LSTM.Process_csv
 import Parameters
+import Statistical_methods.Confidence_interval
 from LSTM.Create_sample_target import create_sample_target_gap_training, create_sample_gap_prediction
 from Statistical_methods.ARIMA import run_ARIMA
 from Statistical_methods.Linear_interpolation import run_linear_interpolation
@@ -22,7 +23,7 @@ if Parameters.mode == "train":
 
 elif Parameters.mode == "predict":
     if Parameters.length_of_prediction > 1:
-        original_data, prediction, sample2 = predict_batch()
+        original_data, prediction, sample2, sample3 = predict_batch()
     else:
         original_data, prediction = predict_iterative()
 
@@ -59,7 +60,7 @@ elif Parameters.mode == "accuracy":
 
     def run_accuracy_test(start):
         if Parameters.test_type == "LSTM":
-            original_data, prediction, sample2 = predict_batch(start)
+            original_data, prediction, sample2, sample3 = predict_batch(start)
 
             original_data_crop = original_data.copy()[
                             start:start + Parameters.length_of_prediction]
@@ -68,8 +69,6 @@ elif Parameters.mode == "accuracy":
 
             mse = mean_squared_error(original_data_crop, prediction_crop)
             mae = mean_absolute_error(original_data_crop, prediction_crop)
-            print(original_data_crop)
-            print(prediction_crop)
             corr_coeff = pearsonr(original_data_crop, prediction_crop.flatten())[0]
 
             mse_array[test] = mse
@@ -101,34 +100,31 @@ elif Parameters.mode == "accuracy":
     mse = 0.0
     mae = 0.0
     corr_coeff = 0.0
+    abs_corr_coeff = 0.0
 
     for i in range(len(mse_array)):
         mse += mse_array[i]
         mae += mae_array[i]
         corr_coeff += corr_coeff_array[i]
+        abs_corr_coeff += abs(corr_coeff_array[i])
 
     if Parameters.accuracy_tests_from_array:
         mse /= len(Parameters.test_positions)
         mae /= len(Parameters.test_positions)
         corr_coeff /= len(Parameters.test_positions)
+        abs_corr_coeff /= len(Parameters.test_positions)
     else:
         mse /= number_of_tests
         mae /= number_of_tests
         corr_coeff /= number_of_tests
+        abs_corr_coeff /= number_of_tests
 
     print("Average mean squared error after %d runs: %.3f" % (number_of_tests, mse))
     print("Average mean absolute error after %d runs: %.3f" % (number_of_tests, mae))
     print("Average correlation coefficient after %d runs: %.3f" % (number_of_tests, corr_coeff))
+    print("Average absolute correlation coefficient after %d runs: %.3f" % (number_of_tests, abs_corr_coeff))
 
     print("Time elapsed: %.3f seconds" % (time.time() - time_start))
-
-elif Parameters.mode == "tete":
-    samples, targets = create_sample_target_gap_training(Parameters.path_train_data)
-
-    plt.plot(samples[375])
-    plt.plot(targets[375])
-
-    plt.show()
 
 else:
     current_series, sample, _ = create_sample_gap_prediction(Parameters.path_test_data)

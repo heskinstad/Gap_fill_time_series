@@ -11,15 +11,18 @@ def Produce_log(loss):
 
     dataset = "Dataset: " + Parameters.path_train_data
     dataset2 = "Dataset 2nd variable: " + Parameters.path_train_data_other_variable
+    dataset3 = "Dataset 3rd variable: " + Parameters.path_train_data_other_variable2
     column_or_row = "Column or row: " + Parameters.column_or_row
     index = "Column index: " + str(
         Parameters.column_index) if Parameters.column_or_row == "column" else "Row index: " + str(Parameters.row_index)
     index_2nd = "Column index 2nd variable: " + str(Parameters.column_index_second_variable)
+    index_3rd = "Column index 3rd variable: " + str(Parameters.column_index_third_variable)
 
     prediction_mode = "Prediction mode: " + str(Parameters.prediction_mode)
     lookback = "Lookback: " + str(Parameters.lookback)
     length_of_prediction = "Length of prediction (gap size): " + str(Parameters.length_of_prediction)
     lookforward = "Lookforward: " + str(Parameters.lookforward)
+    train_on_entire_series = "Train on entire series: " + str(Parameters.train_on_entire_series)
     num_of_sample_targets_per_series = "Number of sample-targets per series: " + str(
         Parameters.num_of_sample_targets_per_series)
     total_num_of_series = "Total number of series: " + str(Parameters.total_num_of_series)
@@ -44,9 +47,11 @@ def Produce_log(loss):
         "\nTraining file info:\n" +
         dataset + "\n" +
         dataset2 + "\n" +
+        dataset3 + "\n" +
         column_or_row + "\n" +
         index + "\n" +
         index_2nd + "\n" +
+        index_3rd + "\n" +
         multiple_variables + "\n" +
         input_size + "\n" +
         "\nSamples & targets creation:\n" +
@@ -54,6 +59,7 @@ def Produce_log(loss):
         lookback + "\n" +
         length_of_prediction + "\n" +
         lookforward + "\n" +
+        train_on_entire_series + "\n" +
         num_of_sample_targets_per_series + "\n" +
         total_num_of_series + "\n" +
         "\nTraining:\n" +

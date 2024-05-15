@@ -28,7 +28,7 @@ class network_model_lstm_rnn(nn.Module):
         # LSTM layer
         self.lstm = nn.LSTM(input_size, hidden_layer_size, num_layers, batch_first=True)
 
-        # Fully connected layer to get the output size to 10 (for 10 measurements)
+        # Fully connected layer to reduce the output size
         self.linear = nn.Linear(hidden_layer_size, output_size)
 
     def forward(self, input_seq):
@@ -41,8 +41,7 @@ class network_model_lstm_rnn(nn.Module):
         # hn, cn: tensors of shape (num_layers, batch_size, hidden_layer_size), containing the hidden and cell state of the last timestep
         lstm_out, (hn, cn) = self.lstm(input_seq, (h0.detach(), c0.detach()))
 
-        # Only take the output from the final timestep
-        # You might need to modify this, depending on how you want to structure your data
+        # Reduce the output dimension size (from defined input size to defined output size)
         lstm_out = lstm_out[:, -1, :]
 
         # Pass the final output of the LSTM to the linear layer

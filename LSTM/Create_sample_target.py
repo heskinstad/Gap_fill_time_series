@@ -52,7 +52,7 @@ def create_sample_prediction(path):
     return current_series, sample
 
 
-def create_sample_target_gap_training(path, path2):
+def create_sample_target_gap_training(path, path2, path3):
     num_of_sample_targets_per_series = Parameters.num_of_sample_targets_per_series
     total_num_of_series = Parameters.total_num_of_series
 
@@ -62,7 +62,7 @@ def create_sample_target_gap_training(path, path2):
     lookforward = Parameters.lookforward
 
     if Parameters.multiple_variables:
-        samples = np.empty((total_num_of_series * num_of_sample_targets_per_series, lookback + length_of_prediction + lookforward, 2))
+        samples = np.empty((total_num_of_series * num_of_sample_targets_per_series, lookback + length_of_prediction + lookforward, Parameters.input_size))
     else:
         samples = np.empty((total_num_of_series * num_of_sample_targets_per_series, lookback + length_of_prediction + lookforward, 1))
 
@@ -75,25 +75,49 @@ def create_sample_target_gap_training(path, path2):
             current_series = np.array(process_csv_column(path, i + Parameters.column_index), dtype=float)
             if Parameters.multiple_variables:
                 current_series_2 = np.array(process_csv_column(path2, i + Parameters.column_index_second_variable), dtype=float)
+                if Parameters.input_size == 3:
+                    current_series_3 = np.array(process_csv_column(path3, i + Parameters.column_index_third_variable), dtype=float)
 
         series_length = current_series.size
 
+        if Parameters.train_on_entire_series:
+            num_of_sample_targets_per_series = len(current_series) - lookback - length_of_prediction - lookforward + 1
+            if Parameters.multiple_variables:
+                samples = np.empty((num_of_sample_targets_per_series,
+                                    lookback + length_of_prediction + lookforward, 2))
+            else:
+                samples = np.empty((num_of_sample_targets_per_series,
+                                    lookback + length_of_prediction + lookforward, 1))
+            targets = np.empty((num_of_sample_targets_per_series, length_of_prediction, 1))
+
         for j in range(num_of_sample_targets_per_series):
-            # Create n number of sample-targets from this one series
-            start = random.randint(0, series_length - lookback - length_of_prediction - lookforward - 1)
+
+            if Parameters.train_on_entire_series:
+                start = j
+            else:
+                # Create n number of sample-targets from this one series
+                start = random.randint(0, series_length - lookback - length_of_prediction - lookforward - 1)
 
             sample = current_series.copy()[start:start + lookback + Parameters.length_of_prediction + lookforward]
             if Parameters.multiple_variables:
                 sample2 = current_series_2.copy()[start:start + lookback + Parameters.length_of_prediction + lookforward]
                 sample2[:lookback] = 0
                 sample2[lookback+length_of_prediction:] = 0
+                if Parameters.input_size == 3:
+                    sample3 = current_series_3.copy()[start:start + lookback + Parameters.length_of_prediction + lookforward]
+                    sample3[:lookback] = 0
+                    sample3[lookback + length_of_prediction:] = 0
 
             sample[lookback:lookback+length_of_prediction] = 0
 
             target = current_series.copy()[start + lookback:start + lookback + Parameters.length_of_prediction]
 
             if Parameters.multiple_variables:
-                sample = np.column_stack((sample, sample2))
+                if Parameters.input_size == 2:
+                    sample = np.column_stack((sample, sample2))
+                elif Parameters.input_size == 3:
+                    sample = np.column_stack((sample, sample2, sample3))
+
 
             if not Parameters.multiple_variables:
                 sample = np.expand_dims(sample, axis=1)
@@ -116,6 +140,7 @@ def create_sample_gap_prediction(path, start=Parameters.series_prediction_start)
         current_series = np.array(process_csv_column(path, Parameters.prediction_series_column), dtype=float)
         if Parameters.multiple_variables:
             current_series_2 = np.array(process_csv_column(Parameters.path_test_data_other_variable, Parameters.prediction_series_column), dtype=float)
+            current_series_3 = np.array(process_csv_column(Parameters.path_test_data_other_variable, Parameters.prediction_series_column), dtype=float)
 
     sample = current_series.copy()[
              start - Parameters.lookback:start + Parameters.length_of_prediction + Parameters.lookforward]
@@ -123,19 +148,30 @@ def create_sample_gap_prediction(path, start=Parameters.series_prediction_start)
         sample2 = current_series_2.copy()[start - Parameters.lookback:start + Parameters.length_of_prediction + Parameters.lookforward]
         sample2[:Parameters.lookback] = 0
         sample2[Parameters.lookback + Parameters.length_of_prediction:] = 0
+        if Parameters.input_size == 3:
+            sample3 = current_series_3.copy()[start - Parameters.lookback:start + Parameters.length_of_prediction + Parameters.lookforward]
+            sample3[:Parameters.lookback] = 0
+            sample3[Parameters.lookback + Parameters.length_of_prediction:] = 0
 
     sample[Parameters.lookback:Parameters.lookback + Parameters.length_of_prediction] = 0
 
     if Parameters.multiple_variables:
-        sample = np.column_stack((sample, sample2))
+        if Parameters.input_size == 2:
+            sample = np.column_stack((sample, sample2))
+        else:
+            sample = np.column_stack((sample, sample2, sample3))
 
     if Parameters.normalize_values:
         sample = Normalize(sample, Parameters.data_max_value, Parameters.data_min_value)
 
     if not Parameters.multiple_variables:
         sample2 = 0
+        sample3 = 0
 
-    return current_series, sample, sample2
+    if Parameters.input_size == 2:
+        sample3 = 0
+
+    return current_series, sample, sample2, sample3
 
 
 def create_sample_target_ARIMA(path, start=Parameters.series_prediction_start):

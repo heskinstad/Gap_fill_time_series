@@ -1,0 +1,39 @@
+Name: trained_model_lstm_rnn_munkholmen_50_50_50_multivariate_1511_ep
+
+Training parameters
+-------------------
+
+Training file info:
+Dataset: C:\Users\Hansk\PycharmProjects\Gap_fill_time_series\data\Munkholmen\2022-2023all_hourly.csv
+Dataset 2nd variable: C:\Users\Hansk\PycharmProjects\Gap_fill_time_series\data\MET\MET_Munkholmen_temp_hourly_2022-2023.csv
+Column or row: column
+Column index: 2
+Column index 2nd variable: 2
+Multiple variables: True
+Input size: 2
+
+Samples & targets creation:
+Prediction mode: fill_gap
+Lookback: 50
+Length of prediction (gap size): 50
+Lookforward: 50
+Train on entire series: False
+Number of sample-targets per series: 1000
+Total number of series: 1
+
+Training:
+Epochs: 1511
+Learning rate: 0.02
+Momentum: 0.9
+Weight decay: 0.0005
+Batch size: 64
+
+Network info:
+Number of layers: 1
+Hidden layer size: 150
+
+Prediction parameters:
+Length of prediction (gap size): 50
+
+Results after training:
+Loss: 0.20061081647872925

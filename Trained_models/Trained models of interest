@@ -1,0 +1,32 @@
+Trained models of interest
+--------------------------
+
+trained_model_lstm_rnn_munkholmen_50_50_50_multivariate_500_ep
+- Uses MET data
+
+trained_model_lstm_rnn_munkholmen_50_50_50_500_ep
+
+
+
+trained_model_lstm_rnn_munkholmen_10_50_10_multivariate_500_ep
+- Uses MET data
+
+trained_model_lstm_rnn_munkholmen_10_50_10_500_ep
+
+
+
+trained_model_lstm_rnn_munkholmen_50_20_50_multivariate_500_ep
+- Uses MET data
+
+trained_model_lstm_rnn_munkholmen_50_20_50_500_ep
+
+
+
+trained_model_lstm_rnn_munkholmen_20_20_20_multivariate_500_ep
+- Uses MET data
+
+trained_model_lstm_rnn_munkholmen_20_20_20_500_ep
+
+
+trained_model_lstm_rnn_munkholmen_50_150_50_multivariate_500_ep
+- Uses MET data

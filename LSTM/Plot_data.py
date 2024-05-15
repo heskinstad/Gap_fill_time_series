@@ -33,6 +33,10 @@ def plot_data(original_data, predicted_data, start=Parameters.series_prediction_
     ax.plot(dates[values_before+Parameters.lookback:values_before+Parameters.lookback+Parameters.length_of_prediction], predicted_data, c='r', label="Prediction")
     ax.plot(dates, missing_data, '--', c='b', label="True data (missing)")
 
+    # Calculate confidence intervals
+    lower_bound = np.percentile(missing_data[10+Parameters.lookback:10+Parameters.lookback+Parameters.length_of_prediction], 2.5, axis=0)
+    upper_bound = np.percentile(missing_data[10+Parameters.lookback:10+Parameters.lookback+Parameters.length_of_prediction], 97.5, axis=0)
+    interval = (upper_bound - lower_bound) / 2
 
     # Add multivariate time-series
     if Parameters.multiple_variables and Parameters.test_type == "LSTM":
@@ -42,8 +46,13 @@ def plot_data(original_data, predicted_data, start=Parameters.series_prediction_
         ax.plot(dates[:Parameters.lookback+Parameters.lookforward+Parameters.length_of_prediction+10], sample2_array, '--', c='cyan', label="Available data (MET)")
 
     if Parameters.test_type == "LSTM":
-        ax.axvspan(dates[values_before], dates[values_before+Parameters.lookback], facecolor='green', alpha=0.2, label="Available data")
+        ax.axvspan(dates[values_before], dates[values_before+Parameters.lookback-1], facecolor='green', alpha=0.2, label="Available data")
         ax.axvspan(dates[values_before + Parameters.lookback + Parameters.length_of_prediction], dates[values_before + Parameters.lookback + Parameters.length_of_prediction + Parameters.lookforward], facecolor='green', alpha=0.2)
+
+    # Plot confidence interval
+    plt.fill_between(dates[10+Parameters.lookback:10+Parameters.lookback+Parameters.length_of_prediction],
+                     missing_data[10+Parameters.lookback:10+Parameters.lookback+Parameters.length_of_prediction]-interval,
+                     missing_data[10+Parameters.lookback:10+Parameters.lookback+Parameters.length_of_prediction]+interval, color='blue', alpha=0.1)
 
     plt.xlabel("Time\n(date)")
     ax.xaxis.set_label_coords(-0.08, -0.038)

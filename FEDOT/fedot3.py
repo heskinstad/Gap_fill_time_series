@@ -68,7 +68,7 @@ synthetic_time_series = generate_synthetic_data()
 # We will predict 100 values in the future
 len_forecast = 50
 
-synthetic_time_series, _, _ = Create_sample_target.create_sample_gap_prediction(os.getcwd() + r"\data\Munkholmen\all_hourly_fixed.csv")[:2000]
+synthetic_time_series, _, _, _ = Create_sample_target.create_sample_gap_prediction(os.getcwd() + r"\data\Munkholmen\all_hourly_fixed.csv")[:2000]
 
 # Let's dividide our data on train and test samples
 train_data = synthetic_time_series[:-len_forecast]

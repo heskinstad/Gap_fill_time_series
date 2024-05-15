@@ -21,19 +21,15 @@ class Trainer:
         loss_values = np.empty(epochs, dtype=float)
 
         # Define the weight factor for the edges
-        edge_weight = 10  # for example, the edges are 10 times more important
+        edge_weight = 20
 
-        # Adjust these indices based on where the gap starts and ends in your input sequences
-        gap_start = 50
-        gap_end = 99
-
-        def create_gap_weights(batch_size, sequence_length, gap_start, gap_end, edge_weight):
+        def create_gap_weights(batch_size, sequence_length, edge_weight):
             # Create an array of ones
             weights = np.ones((batch_size, sequence_length, 1))
 
             # Assign higher weights to the edges of the gap
-            weights[:, gap_start:gap_start + edge_weight, :] = edge_weight
-            weights[:, gap_end - edge_weight:gap_end, :] = edge_weight
+            weights[:, 0, :] = edge_weight
+            weights[:, Parameters.length_of_prediction-1, :] = edge_weight
 
             return torch.tensor(weights, dtype=torch.float32)
 
@@ -47,9 +43,8 @@ class Trainer:
                 #loss = self.loss_fn(predictions.to(self.device), targets.to(self.device))
 
                 # Generate weights for this batch
-                batch_size = samples.size(0)  # assuming samples is a tensor of shape (batch_size, 150, 1)
-                weights = create_gap_weights(batch_size, targets.size(1), gap_start, gap_end, edge_weight).to(
-                    self.device)
+                batch_size = samples.size(0)  # assuming samples is a tensor of shape (batch_size, 150, Parameters.input_size)
+                weights = create_gap_weights(batch_size, targets.size(1), edge_weight).to(self.device)
 
                 # Calculate the weighted loss
                 loss = (weights * (predictions.to(self.device) - targets.to(self.device)) ** 2).mean()
@@ -76,7 +71,7 @@ class Trainer:
         # Plot the loss
         plt.plot(loss_values)
         plt.xlabel("Loss")
-        plt.savefig(os.getcwd() + r"\Trained_models\trained_model_lstm_rnn_figure.png")
+        plt.savefig(os.getcwd() + r"\Trained_models\\" + Parameters.model_name + "_figure.png")
         plt.show()
 
         return loss_values[-1]

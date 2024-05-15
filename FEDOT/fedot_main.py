@@ -32,7 +32,7 @@ import matplotlib as mpl
 mpl.use('TkAgg')
 
 # Read the file
-df, _, _ = Create_sample_target.create_sample_gap_prediction(os.getcwd() + r"\data\Munkholmen\all_hourly_fixed.csv")
+df, _, _, _ = Create_sample_target.create_sample_gap_prediction(os.getcwd() + r"\data\Munkholmen\all_hourly_fixed.csv")
 
 #df = pd.to_datetime(df)
 print(df)

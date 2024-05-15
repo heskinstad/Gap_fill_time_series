@@ -18,14 +18,13 @@ def predict(sample=None):
         if Parameters.prediction_mode == "forecast_forward":
             _, sample = create_sample_prediction(Parameters.path_test_data)
         else:
-            _, sample, _ = create_sample_gap_prediction(Parameters.path_test_data)
+            _, sample, _, _ = create_sample_gap_prediction(Parameters.path_test_data)
     else:
         if Parameters.prediction_mode == "forecast_forward":
             sample = sample.reshape((1, Parameters.lookback, 1))
         else:
-            #sample = sample.reshape((1, Parameters.lookback + Parameters.length_of_prediction + Parameters.lookforward, 1))
             if Parameters.multiple_variables:
-                sample = sample.reshape((1, Parameters.lookback + Parameters.length_of_prediction + Parameters.lookforward, 2))
+                sample = sample.reshape((1, Parameters.lookback + Parameters.length_of_prediction + Parameters.lookforward, Parameters.input_size))
             else:
                 sample = sample.reshape((1, Parameters.lookback + Parameters.length_of_prediction + Parameters.lookforward, 1))
 
@@ -69,8 +68,9 @@ def predict_batch(start=Parameters.series_prediction_start):
     if Parameters.prediction_mode == "forecast_forward":
         current_series, sample = create_sample_prediction(Parameters.path_test_data)
         sample2 = 0
+        sample3 = 0
     else:
-        current_series, sample, sample2 = create_sample_gap_prediction(Parameters.path_test_data, start)
+        current_series, sample, sample2, sample3 = create_sample_gap_prediction(Parameters.path_test_data, start)
 
     predicted_series = current_series.copy()
 
@@ -84,4 +84,4 @@ def predict_batch(start=Parameters.series_prediction_start):
     else:
         predicted_series[start:start + Parameters.length_of_prediction] = predict(sample)
 
-    return current_series, predicted_series, sample2
+    return current_series, predicted_series, sample2, sample3
