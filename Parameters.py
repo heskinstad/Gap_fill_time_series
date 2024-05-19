@@ -54,7 +54,7 @@ prediction_series_column_second_variable = 2
 series_prediction_start = 840  # The starting point of the test dataset to predict from
 
 # Prediction parameters
-length_of_prediction = 150  # Size of gap, predict all at once (batch) - BATCH MODE IS AUTOMATICALLY CHOSEN IF THIS VARIABLE IS GREATER THAN 1
+length_of_prediction = 20  # Size of gap, predict all at once (batch) - BATCH MODE IS AUTOMATICALLY CHOSEN IF THIS VARIABLE IS GREATER THAN 1
 number_of_predicts = 1000  # Size of gap, predict one by one (iterative)
 
 # Network
@@ -72,9 +72,9 @@ path_trained_model = os.getcwd() + r"\Trained_models\\" + model_name + ".pt"  # 
 # Accuracy testing
 test_type = "LSTM"  # "LSTM" or "ARIMA" or "interpolation"
 number_of_tests = 100
-accuracy_tests_from_array = False  # Only test the positions defined in the array on the next line
+accuracy_tests_from_array = True  # Only test the positions defined in the array on the next line
 test_positions = np.arange(lookback, 1597-length_of_prediction-lookforward+1)  # Test all positions
-plot_every_test = True
+plot_every_test = False
 error_every_test = True
 
 # ARIMA parameters

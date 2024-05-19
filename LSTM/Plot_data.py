@@ -55,7 +55,7 @@ def plot_data(original_data, predicted_data, start=Parameters.series_prediction_
                      missing_data[10+Parameters.lookback:10+Parameters.lookback+Parameters.length_of_prediction]+interval, color='blue', alpha=0.1)
 
     plt.xlabel("Time\n(date)")
-    ax.xaxis.set_label_coords(-0.08, -0.038)
+    ax.xaxis.set_label_coords(-0.10, -0.038)
     plt.ylabel("Temperature (°C)")
     plt.legend(loc='upper center', bbox_to_anchor=(0.5,-0.1), ncol=3)
     if Parameters.test_type == "LSTM":

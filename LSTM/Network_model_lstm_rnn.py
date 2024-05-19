@@ -3,22 +3,7 @@ from torch import nn
 
 import Parameters
 
-
-'''class network_model_lstm_rnn(torch.nn.Module):
-
-    def __init__(self):
-        super().__init__()
-        self.lstm = nn.LSTM(input_size=Parameters.lookback, hidden_size=50, num_layers=1, batch_first=True)
-        self.linear = nn.Linear(50, 1)
-
-    def forward(self, x):
-        x, _ = self.lstm(x)
-        x = self.linear(x)
-        return x
-'''
-
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
 
 class network_model_lstm_rnn(nn.Module):
     def __init__(self, input_size=Parameters.input_size, hidden_layer_size=Parameters.hidden_layer_size, output_size=Parameters.network_output_size, num_layers=Parameters.num_layers):
@@ -37,8 +22,6 @@ class network_model_lstm_rnn(nn.Module):
         c0 = torch.zeros(Parameters.num_layers, input_seq.size(0), self.hidden_layer_size).requires_grad_().to(device)
 
         # Forward pass through LSTM layer
-        # lstm_out: tensor of shape (batch_size, seq_length, hidden_layer_size)
-        # hn, cn: tensors of shape (num_layers, batch_size, hidden_layer_size), containing the hidden and cell state of the last timestep
         lstm_out, (hn, cn) = self.lstm(input_seq, (h0.detach(), c0.detach()))
 
         # Reduce the output dimension size (from defined input size to defined output size)
