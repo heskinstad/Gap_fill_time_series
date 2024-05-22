@@ -1,3 +1,4 @@
+import math
 import random
 
 import numpy as np
@@ -101,6 +102,10 @@ elif Parameters.mode == "accuracy":
     mae = 0.0
     corr_coeff = 0.0
     abs_corr_coeff = 0.0
+
+    for i in range(len(corr_coeff_array)):
+        if math.isnan(corr_coeff_array[i]):
+            corr_coeff_array[i] = corr_coeff_array[i-1]  # Use the nearest value. These are pretty much the same and happens rarely, which will not affect the end results to any significant extent
 
     for i in range(len(mse_array)):
         mse += mse_array[i]
