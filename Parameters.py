@@ -6,7 +6,7 @@ prediction_mode = "fill_gap"  # "forecast_forward to predict future states only,
 multiple_variables = True
 
 if multiple_variables:
-    input_size = 2
+    input_size = 3
     multivariate_str = "multivariate_"
 else:
     input_size = 1
@@ -15,10 +15,12 @@ else:
 # Paths data
 path_train_data = os.getcwd() + r"\data\Munkholmen\2022-2023all_hourly.csv"  # Path to training dataset
 path_train_data_other_variable = os.getcwd() + r"\data\MET\MET_Munkholmen_temp_hourly_2022-2023.csv"  # Path to training dataset (variable #2)
-path_train_data_other_variable2 = os.getcwd() + r"\data\NVE\hourly_data_spline_interpolated_2022-2023.csv"  # Path to training dataset (variable #2)
+#path_train_data_other_variable2 = os.getcwd() + r"\data\NVE\hourly_data_spline_interpolated_2022-2023.csv"  # Path to training dataset (variable #2)
+path_train_data_other_variable2 = os.getcwd() + r"\data\Munkholmen\Munkholmen_air_temp_hourly_2022-2023.csv"  # Path to training dataset (variable #2)
 path_test_data = os.getcwd() + r"\data\Munkholmen\2024all_hourly.csv"  # Path to test dataset
 path_test_data_other_variable = os.getcwd() + r"\data\MET\MET_Munkholmen_temp_hourly_2024.csv"  # Path to test dataset (variable #2)
-path_test_data_other_variable2 = os.getcwd() + r"\data\NVE\hourly_data_spline_interpolated_2024.csv"  # Path to test dataset (variable #2)
+#path_test_data_other_variable2 = os.getcwd() + r"\data\NVE\hourly_data_spline_interpolated_2024.csv"  # Path to test dataset (variable #2)
+path_test_data_other_variable2 = os.getcwd() + r"\data\Munkholmen\Munkholmen_air_temp_hourly_2024.csv"  # Path to test dataset (variable #2)
 
 column_or_row = "column"  # If each entry in the dataset is formatted through columns or rows
 row_index = 1  # The row index to use, if entries ordered by rows
@@ -66,6 +68,7 @@ else:
 
 # Path trained model
 model_name = "trained_model_lstm_rnn_munkholmen_{0}_{1}_{2}_{3}{4}_ep".format(lookback, length_of_prediction, lookforward, multivariate_str, epochs)
+#model_name = "trained_model_lstm_rnn_munkholmen_{0}_{1}_{2}_{3}{4}_ep_3vars".format(lookback, length_of_prediction, lookforward, multivariate_str, epochs)
 #model_name = "trained_model_lstm_rnn_munkholmen_{0}_{1}_{2}_{3}{4}_ep_2_layers".format(lookback, length_of_prediction, lookforward, multivariate_str, epochs)
 #model_name = "trained_model_lstm_rnn_munkholmen_{0}_{1}_{2}_{3}{4}_ep_1200_hl".format(lookback, length_of_prediction, lookforward, multivariate_str, epochs)
 #model_name = "trained_model_lstm_rnn_munkholmen_{0}_{1}_{2}_{3}{4}_ep_150_hl".format(lookback, length_of_prediction, lookforward, multivariate_str, epochs)
