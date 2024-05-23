@@ -50,9 +50,10 @@ def plot_data(original_data, predicted_data, start=Parameters.series_prediction_
         ax.axvspan(dates[values_before + Parameters.lookback + Parameters.length_of_prediction], dates[values_before + Parameters.lookback + Parameters.length_of_prediction + Parameters.lookforward], facecolor='green', alpha=0.2)
 
     # Plot confidence interval
-    plt.fill_between(dates[10+Parameters.lookback:10+Parameters.lookback+Parameters.length_of_prediction],
+    '''plt.fill_between(dates[10+Parameters.lookback:10+Parameters.lookback+Parameters.length_of_prediction],
                      missing_data[10+Parameters.lookback:10+Parameters.lookback+Parameters.length_of_prediction]-interval,
                      missing_data[10+Parameters.lookback:10+Parameters.lookback+Parameters.length_of_prediction]+interval, color='blue', alpha=0.1)
+    '''
 
     plt.xlabel("Time\n(date)")
     ax.xaxis.set_label_coords(-0.10, -0.038)

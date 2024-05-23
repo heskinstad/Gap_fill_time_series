@@ -76,6 +76,8 @@ test_type = "LSTM"  # "LSTM" or "ARIMA" or "interpolation"
 number_of_tests = 100
 accuracy_tests_from_array = True  # Only test the positions defined in the array on the next line
 test_positions = np.arange(lookback, 1597-length_of_prediction-lookforward+1)  # Test all positions
+if accuracy_tests_from_array:
+    number_of_tests = len(test_positions)
 plot_every_test = False
 error_every_test = True
 
