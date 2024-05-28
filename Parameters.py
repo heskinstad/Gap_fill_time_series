@@ -6,7 +6,7 @@ prediction_mode = "fill_gap"  # "forecast_forward to predict future states only,
 multiple_variables = True
 
 if multiple_variables:
-    input_size = 3
+    input_size = 2
     multivariate_str = "multivariate_"
 else:
     input_size = 1
@@ -16,11 +16,13 @@ else:
 path_train_data = os.getcwd() + r"\data\Munkholmen\2022-2023all_hourly.csv"  # Path to training dataset
 path_train_data_other_variable = os.getcwd() + r"\data\MET\MET_Munkholmen_temp_hourly_2022-2023.csv"  # Path to training dataset (variable #2)
 #path_train_data_other_variable2 = os.getcwd() + r"\data\NVE\hourly_data_spline_interpolated_2022-2023.csv"  # Path to training dataset (variable #2)
-path_train_data_other_variable2 = os.getcwd() + r"\data\Munkholmen\Munkholmen_air_temp_hourly_2022-2023.csv"  # Path to training dataset (variable #2)
+path_train_data_other_variable2 = os.getcwd() + r"\data\NVE\Rate-Vannstand-time-v1_train.csv"  # Path to training dataset (variable #2)
+#path_train_data_other_variable2 = os.getcwd() + r"\data\Munkholmen\Munkholmen_air_temp_hourly_2022-2023.csv"  # Path to training dataset (variable #2)
 path_test_data = os.getcwd() + r"\data\Munkholmen\2024all_hourly.csv"  # Path to test dataset
 path_test_data_other_variable = os.getcwd() + r"\data\MET\MET_Munkholmen_temp_hourly_2024.csv"  # Path to test dataset (variable #2)
 #path_test_data_other_variable2 = os.getcwd() + r"\data\NVE\hourly_data_spline_interpolated_2024.csv"  # Path to test dataset (variable #2)
-path_test_data_other_variable2 = os.getcwd() + r"\data\Munkholmen\Munkholmen_air_temp_hourly_2024.csv"  # Path to test dataset (variable #2)
+path_test_data_other_variable2 = os.getcwd() + r"\data\NVE\Rate-Vannstand-time-v1_test.csv"  # Path to test dataset (variable #2)
+#path_test_data_other_variable2 = os.getcwd() + r"\data\Munkholmen\Munkholmen_air_temp_hourly_2024.csv"  # Path to test dataset (variable #2)
 
 column_or_row = "column"  # If each entry in the dataset is formatted through columns or rows
 row_index = 1  # The row index to use, if entries ordered by rows
@@ -33,7 +35,7 @@ make_backup = True
 lookback = 50  # Input dimension
 lookforward = 50  # Input dimension if prediction_mode is "fill_gap"
 train_on_entire_series = False  # Create as many unique sample-targets as the training data allows for. Overrides num_of_sample_targets_per_series
-num_of_sample_targets_per_series = 14500  # Number of samples (and corresponding targets) per complete data series
+num_of_sample_targets_per_series = 1000  # Number of samples (and corresponding targets) per complete data series
 total_num_of_series = 1  # Number of data series, if the data is split between multiple rows/columns
 
 # Normalize data
