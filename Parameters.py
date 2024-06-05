@@ -87,6 +87,6 @@ plot_every_test = False
 error_every_test = True
 
 # ARIMA parameters
-p = lookback
-d = 1
-q = lookback
+p = lookback  # number of historical data points
+d = 1  # depends on if the series is stationary or not (we assume it's always non-stationary)
+q = length_of_prediction  # moving average window, must be the same as the gap length
