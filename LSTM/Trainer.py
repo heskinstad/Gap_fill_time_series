@@ -20,14 +20,12 @@ class Trainer:
 
         loss_values = np.empty(epochs, dtype=float)
 
-        # Define the weight factor for the edges
-        edge_weight = 20
+        edge_weight = 20  # Edge data points gets a weight 20 times greater than any other point
 
+        # Create the weights of every data point in the gap. First and last value gets weight of 20
         def create_gap_weights(batch_size, sequence_length, edge_weight):
-            # Create an array of ones
             weights = np.ones((batch_size, sequence_length, 1))
 
-            # Assign higher weights to the edges of the gap
             weights[:, 0, :] = edge_weight
             weights[:, Parameters.length_of_prediction-1, :] = edge_weight
 
@@ -39,7 +37,7 @@ class Trainer:
                 # Forward pass
                 predictions = self.model(samples.to(self.device))
 
-                # Calculate the loss
+                # Calculate the loss (old loss function without weights)
                 #loss = self.loss_fn(predictions.to(self.device), targets.to(self.device))
 
                 # Generate weights for this batch
@@ -56,7 +54,7 @@ class Trainer:
 
                 loss_values[epoch] = loss
 
-                # Learning rate that decays linearly (comment out this block if you want a constant learning rate)
+                # Learning rate that decays linearly (comment out this block for a constant learning rate)
                 for param_group in self.optimizer.param_groups:
                     param_group['lr'] = learning_rate - (learning_rate / epochs) * epoch
 

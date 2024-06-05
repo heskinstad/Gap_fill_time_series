@@ -32,9 +32,6 @@ def run_linear_interpolation(start=Parameters.series_prediction_start):
     mae = mean_absolute_error(true_gap, interpolated_gap)
     corr_coeff = pearsonr(true_gap, interpolated_gap)[0]
 
-    #interpolated_gap2 = data.copy()
-    #interpolated_gap2[start:start+Parameters.length_of_prediction] = interpolated_gap
-
     if Parameters.error_every_test:
         print("Linear Interpolation Mean squared error: %.3f" % mse)
         print("Linear Interpolation Mean absolute error: %.3f" % mae)
@@ -43,6 +40,7 @@ def run_linear_interpolation(start=Parameters.series_prediction_start):
     if Parameters.plot_every_test:
         plot_data(data, interpolated_gap, start=start)
 
+        # Old print method
         #plt.plot(true_gap)
         #plt.plot(data[start-10:start+Parameters.length_of_prediction+10])
         #plt.plot(interpolated_gap)

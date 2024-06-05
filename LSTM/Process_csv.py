@@ -36,7 +36,7 @@ def process_csv_row(path, row_index):
     with open(path, mode='r') as file:
         reader = csv.reader(file)
 
-        # Iterate over each row
+        # Iterate over each row, add data
         for i, row in enumerate(reader):
             if i == row_index:
                 row_data = np.array([float(value) for value in row[1:] if value != ''], dtype=float)

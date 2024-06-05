@@ -87,6 +87,8 @@ def run_ARIMA(start=Parameters.series_prediction_start):
         ax.plot(forecast_dates_forward, forecast_weighted_average, label='Forecast weighted average mean', color='r')
         ax.plot(forecast_dates_forward, forecast_forward, '--', label='Forecast forward', color='g', alpha=0.5)
         ax.plot(forecast_dates_backward, forecast_backward, '--', label='Forecast backward', color='y', alpha=0.5)
+
+        # Add labels and stuff
         ax.axvspan(dates[start], dates[start+Parameters.lookback], facecolor='green', alpha=0.2,
                    label="Available data pre-gap")
         ax.axvspan(dates[start+Parameters.lookback+Parameters.length_of_prediction], dates[

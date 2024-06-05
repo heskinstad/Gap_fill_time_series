@@ -43,7 +43,7 @@ def predict(sample=None):
 
     return prediction
 
-
+# Iterative approach, predict just a single data point forward (not gap-filling, just forward forecast)
 def predict_iterative():
     current_series, _ = create_sample_prediction(Parameters.path_test_data)
     predicted_series = current_series.copy()
@@ -63,7 +63,7 @@ def predict_iterative():
 
     return current_series, predicted_series
 
-
+# Predict multiple data points at once
 def predict_batch(start=Parameters.series_prediction_start):
     if Parameters.prediction_mode == "forecast_forward":
         current_series, sample = create_sample_prediction(Parameters.path_test_data)

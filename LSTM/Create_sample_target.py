@@ -51,7 +51,7 @@ def create_sample_prediction(path):
 
     return current_series, sample
 
-
+# Create sample-target pairs for RNN LSTM training
 def create_sample_target_gap_training(path, path2, path3):
     num_of_sample_targets_per_series = Parameters.num_of_sample_targets_per_series
     total_num_of_series = Parameters.total_num_of_series
