@@ -10,10 +10,10 @@ Usage: Run main.py in LSTM directory with the path set to Gap_fill_time_series. 
 ## Examples of gap-fillings from the three methods:
 
 ### Linear interpolation
-!(imgs/our_model/linear_interpolation_example.png?raw=true "Linear interpolation example plot")
+![](imgs/interpolation_example_plot.jpg?raw=true "Linear interpolation example plot")
 
 ### ARIMA
-!(imgs/our_model/ARIMA_example.png?raw=true "ARIMA example plot")
+![](imgs/ARIMA_example_plot.jpg?raw=true "ARIMA example plot")
 
 ### RNN LSTM
-!(imgs/RNN_LSTM_example.png?raw=true "RNN LSTM example plot")
+![](imgs/LSTM_example_plot.jpg?raw=true "RNN LSTM example plot")
